@@ -18,6 +18,7 @@ struct FlexSettings {
   Eigen::Array3i right_hip_indices = Eigen::Array3i::Zero();
 
   double dt = 0.002, MA_duration = 0.01;  // [s]
+  bool filtered = false;
 
   friend std::ostream &operator<<(std::ostream &out, const FlexSettings &obj) {
     out << "FlexSettings:\n";
@@ -27,6 +28,7 @@ struct FlexSettings {
     out << "    left_damping: " << obj.right_damping << "\n";
     out << "    left_hip_indices: " << obj.left_hip_indices << "\n";
     out << "    right_hip_indices: " << obj.right_hip_indices << "\n";
+    out << "    filtered: " << obj.filtered << "\n";
     out << "    MA_duration: " << obj.MA_duration << "\n";
     out << "    dt: " << obj.dt << "\n" << std::endl;
     return out;
@@ -58,7 +60,9 @@ class Flex {
   eVector2 computed_deflection_;
   eArray2 temp_damping_, temp_actuation_, temp_full_torque_, temp_stiff_;
   eArray2 temp_equiv_stiff_, temp_compliance_;
-  eArray2 summation_LH_, summation_RH_, average_;
+  eArray2 average_;
+  eArray2 summation_LH_ = eArray2::Zero();
+  eArray2 summation_RH_ = eArray2::Zero();
   unsigned long queueSize_;
 
   // equivalentAngles:
@@ -110,17 +114,21 @@ class Flex {
   void correctEstimatedDeflections(const eVectorX &desiredTorque, eVectorX &q,
                                    eVectorX &dq);
 
-  const FlexSettings &getSettings() { return settings_; }
+  const FlexSettings &getSettings() { return settings_; } 
 
-  void resetLeftFlex0() { leftFlex0_ = eVector2::Zero(); }    // is it used?
-  void resetRightFlex0() { rightFlex0_ = eVector2::Zero(); }  // is it used?
+  void reset();
 
-  void setLeftFlex0(const eVector2 &delta0) {
-    leftFlex0_ = delta0;
-  }  // is it used?
-  void setRightFlex0(const eVector2 &delta0) {
-    rightFlex0_ = delta0;
-  }  // is it used?
+  void setLeftFlex0(const eVector2 &delta0) { leftFlex0_ = delta0; } 
+  const eVector2 &getLeftFlex0(void){return leftFlex0_;}
+
+  void setRightFlex0(const eVector2 &delta0) { rightFlex0_ = delta0; } 
+  const eVector2 &getRightFlex0(void){return rightFlex0_;}
+
+  const eArray2 &get_summation_LH(void){return summation_LH_;}
+  const eArray2 &get_summation_RH(void){return summation_RH_;}
+  const std::deque<eArray2> &get_queue_LH(void){return queue_LH_;}
+  const std::deque<eArray2> &get_queue_RH(void){return queue_RH_;}
+
 };
 }  // namespace flex
 

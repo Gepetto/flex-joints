@@ -1,4 +1,5 @@
 #include "flex-joints/flexi-hips.hpp"
+#include <iostream>
 
 namespace flex {
 
@@ -11,6 +12,8 @@ Flex::Flex(const FlexSettings &settings) { initialize(settings); }
 void Flex::initialize(const FlexSettings &settings) {
   settings_ = settings;
   MA_samples_ = (int)round(settings.MA_duration / settings.dt);
+  
+  
 }
 
 const eVector2 &Flex::computeDeflection(const eArray2 &torques,
@@ -79,7 +82,8 @@ void Flex::correctHip(const eVector2 &delta, const eVector2 &deltaDot,
 }
 
 void Flex::correctDeflections(const eVector2 &leftFlexingTorque,
-                              const eVector2 &rightFlexingTorque, eVectorX &q,
+                              const eVector2 &rightFlexingTorque, 
+                              eVectorX &q,
                               eVectorX &dq) {
   /**
    * Arguments:
@@ -88,9 +92,6 @@ void Flex::correctDeflections(const eVector2 &leftFlexingTorque,
    * roll_torque}
    *
    * q and dq are the robot posture and velocities without the freeFlyer part.
-   *
-   * leftHipIndices and rightHipIndices indicate the hip joints for both q, and
-   * dq.
    */
 
   leftFlex_ << computeDeflection(leftFlexingTorque, leftFlex0_,
@@ -99,15 +100,17 @@ void Flex::correctDeflections(const eVector2 &leftFlexingTorque,
   rightFlex_ << computeDeflection(rightFlexingTorque, rightFlex0_,
                                   settings_.right_stiffness,
                                   settings_.right_damping, settings_.dt);
-  ///@todo: Do we include an option to choose between filtered / not filtered?
-  // leftFlexRate_ = (leftFlex_ - leftFlex0_) / settings_.dt;
-  // rightFlexRate_ = (rightFlex_ - rightFlex0_) / settings_.dt;
 
-  leftFlexRate_ = movingAverage((leftFlex_ - leftFlex0_) / settings_.dt,
-                                queue_LH_, summation_LH_);
-  rightFlexRate_ = movingAverage((rightFlex_ - rightFlex0_) / settings_.dt,
-                                 queue_RH_, summation_RH_);
-
+  if (settings_.filtered){
+      leftFlexRate_ = movingAverage((leftFlex_ - leftFlex0_) / settings_.dt,
+                                    queue_LH_, summation_LH_);
+      rightFlexRate_ = movingAverage((rightFlex_ - rightFlex0_) / settings_.dt,
+                                    queue_RH_, summation_RH_);
+  } else {
+      leftFlexRate_ = (leftFlex_ - leftFlex0_) / settings_.dt;
+      rightFlexRate_ = (rightFlex_ - rightFlex0_) / settings_.dt;
+  }
+  
   leftFlex0_ = leftFlex_;
   rightFlex0_ = rightFlex_;
 
@@ -124,8 +127,6 @@ void Flex::correctEstimatedDeflections(const eVectorX &desiredTorque,
    *
    * q and dq are the robot posture and velocities without the freeFlyer part.
    *
-   * leftHipIndices and rightHipIndices indicate the hip joints for both q, and
-   * dq.
    */
 
   adaptLeftYawl_ =
@@ -134,7 +135,8 @@ void Flex::correctEstimatedDeflections(const eVectorX &desiredTorque,
       Eigen::Rotation2Dd(q(settings_.right_hip_indices(0))) * xy_to_yx;
 
   correctDeflections(
-      adaptLeftYawl_ * desiredTorque.segment(settings_.left_hip_indices(1), 2),
+      adaptLeftYawl_ * 
+          desiredTorque.segment(settings_.left_hip_indices(1), 2),
       adaptRightYawl_ *
           desiredTorque.segment(settings_.right_hip_indices(1), 2),
       q, dq);
@@ -146,9 +148,7 @@ void Flex::correctEstimatedDeflections(const eVectorX &desiredTorque,
 
 const eArray2 &Flex::movingAverage(const eArray2 &x, std::deque<eArray2> &queue,
                                    eArray2 &summation) {
-  /// @todo: Compare the results and choose one. This function has the adventage
-  /// of not
-  // reading the full queue.
+
   queue.push_back(x);
   queueSize_ = queue.size();
 
@@ -162,5 +162,14 @@ const eArray2 &Flex::movingAverage(const eArray2 &x, std::deque<eArray2> &queue,
   average_ = summation / queueSize_;
   return average_;
 }
+
+void Flex::reset() { 
+    leftFlex0_ = eVector2::Zero(); 
+    rightFlex0_ = eVector2::Zero();
+    summation_LH_ = eArray2::Zero();
+    summation_RH_ = eArray2::Zero();
+    queue_LH_.clear();
+    queue_RH_.clear();
+  } 
 
 }  // namespace flex
