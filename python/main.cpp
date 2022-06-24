@@ -4,7 +4,7 @@
 #include <boost/python/return_internal_reference.hpp>
 #include <boost/python/suite/indexing/vector_indexing_suite.hpp>
 #include <eigenpy/eigenpy.hpp>
-#include "flexi-hips.hpp"
+#include "flex-joints/flexi-hips.hpp"
 
 namespace flex {
 namespace python {
@@ -70,7 +70,7 @@ void exposeFlex() {
 }
 }
 
-BOOST_PYTHON_MODULE(flex_joints) {  
+BOOST_PYTHON_MODULE(flex_joints) {
 
     eigenpy::enableEigenPy();
     ENABLE_SPECIFIC_MATRIX_TYPE(Eigen::VectorXi); // (look at the @todo above)

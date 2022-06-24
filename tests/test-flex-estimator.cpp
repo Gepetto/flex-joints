@@ -35,7 +35,7 @@ BOOST_AUTO_TEST_CASE(test_flex_estimator_initialize_constructor) {
 //   flex::eVector2 delta0 = flex::eVector2::Zero();
 
 //   flex::eVector2 delta1 = flex_hips.computeDeflection(tau, flex::LEFT);
-//   flex::eVector2 delta2 = flex_hips.computeDeflection(tau, delta0, current_settings.left_stiffness, 
+//   flex::eVector2 delta2 = flex_hips.computeDeflection(tau, delta0, current_settings.left_stiffness,
 //                                                       current_settings.left_damping, current_settings.dt);
 
 //   BOOST_CHECK_EQUAL(delta1, delta2);
@@ -84,5 +84,3 @@ BOOST_AUTO_TEST_CASE(test_flex_estimator_initialize_constructor) {
 //   BOOST_CHECK_EQUAL(q(4), zero_q(4));
 //   BOOST_CHECK(q(5) != zero_q(5));
 // }
-
-

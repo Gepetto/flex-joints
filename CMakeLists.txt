@@ -40,10 +40,10 @@ project(${PROJECT_NAME} ${PROJECT_ARGS})
 # Project dependencies
 find_package(Boost REQUIRED COMPONENTS unit_test_framework)
 find_package(Eigen3 REQUIRED)
-find_package(roscpp REQUIRED)
 
 if(BUILD_PYTHON_INTERFACE)
   FINDPYTHON()
+  find_package(eigenpy REQUIRED)
   string(REGEX REPLACE "-" "_" PY_NAME ${PROJECT_NAME})
   set(${PY_NAME}_INSTALL_DIR ${PYTHON_SITELIB}/${PY_NAME})
   SEARCH_FOR_BOOST_PYTHON()
@@ -61,7 +61,7 @@ set(${PROJECT_NAME}_SOURCES
   )
 
 add_library(${PROJECT_NAME} SHARED ${${PROJECT_NAME}_SOURCES} ${${PROJECT_NAME}_HEADERS})
-target_link_libraries(${PROJECT_NAME} Eigen3::Eigen ${roscpp_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} PUBLIC Eigen3::Eigen)
 target_include_directories(${PROJECT_NAME} PUBLIC $<INSTALL_INTERFACE:include>)
 
 if(SUFFIX_SO_VERSION)
