@@ -38,8 +38,10 @@ COMPUTE_PROJECT_ARGS(PROJECT_ARGS LANGUAGES CXX)
 project(${PROJECT_NAME} ${PROJECT_ARGS})
 
 # Project dependencies
-find_package(Boost REQUIRED COMPONENTS unit_test_framework)
 find_package(Eigen3 REQUIRED)
+if(BUILD_TESTING)
+  find_package(Boost REQUIRED COMPONENTS unit_test_framework)
+endif()
 
 if(BUILD_PYTHON_INTERFACE)
   FINDPYTHON()
@@ -56,7 +58,6 @@ set(${PROJECT_NAME}_HEADERS
   )
 
 set(${PROJECT_NAME}_SOURCES
-  src/flex-joints.cpp
   src/flexi-hips.cpp
   )
 
@@ -74,7 +75,9 @@ if(BUILD_PYTHON_INTERFACE)
 endif()
 
 # Unit tests
-add_subdirectory(tests)
+if(BUILD_TESTING)
+  add_subdirectory(tests)
+endif()
 
 # Installation
 install(TARGETS ${PROJECT_NAME} EXPORT ${TARGETS_EXPORT_NAME} DESTINATION lib)
