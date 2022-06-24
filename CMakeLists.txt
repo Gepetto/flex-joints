@@ -39,6 +39,8 @@ project(${PROJECT_NAME} ${PROJECT_ARGS})
 
 # Project dependencies
 find_package(Boost REQUIRED COMPONENTS unit_test_framework)
+find_package(Eigen3 REQUIRED)
+find_package(roscpp REQUIRED)
 
 if(BUILD_PYTHON_INTERFACE)
   FINDPYTHON()
@@ -50,13 +52,16 @@ endif()
 # Main Library
 set(${PROJECT_NAME}_HEADERS
   include/${PROJECT_NAME}/fwd.hpp
+  include/${PROJECT_NAME}/flexi-hips.hpp
   )
 
 set(${PROJECT_NAME}_SOURCES
   src/flex-joints.cpp
+  src/flexi-hips.cpp
   )
 
 add_library(${PROJECT_NAME} SHARED ${${PROJECT_NAME}_SOURCES} ${${PROJECT_NAME}_HEADERS})
+target_link_libraries(${PROJECT_NAME} Eigen3::Eigen ${roscpp_LIBRARIES})
 target_include_directories(${PROJECT_NAME} PUBLIC $<INSTALL_INTERFACE:include>)
 
 if(SUFFIX_SO_VERSION)
