@@ -56,7 +56,6 @@ set(${PROJECT_NAME}_HEADERS
   )
 
 set(${PROJECT_NAME}_SOURCES
-  src/flex-joints.cpp
   src/flexi-hips.cpp
   )
 
