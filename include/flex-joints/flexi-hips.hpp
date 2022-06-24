@@ -114,21 +114,20 @@ class Flex {
   void correctEstimatedDeflections(const eVectorX &desiredTorque, eVectorX &q,
                                    eVectorX &dq);
 
-  const FlexSettings &getSettings() { return settings_; } 
+  const FlexSettings &getSettings() { return settings_; }
 
   void reset();
 
-  void setLeftFlex0(const eVector2 &delta0) { leftFlex0_ = delta0; } 
-  const eVector2 &getLeftFlex0(void){return leftFlex0_;}
+  void setLeftFlex0(const eVector2 &delta0) { leftFlex0_ = delta0; }
+  const eVector2 &getLeftFlex0(void) { return leftFlex0_; }
 
-  void setRightFlex0(const eVector2 &delta0) { rightFlex0_ = delta0; } 
-  const eVector2 &getRightFlex0(void){return rightFlex0_;}
+  void setRightFlex0(const eVector2 &delta0) { rightFlex0_ = delta0; }
+  const eVector2 &getRightFlex0(void) { return rightFlex0_; }
 
-  const eArray2 &get_summation_LH(void){return summation_LH_;}
-  const eArray2 &get_summation_RH(void){return summation_RH_;}
-  const std::deque<eArray2> &get_queue_LH(void){return queue_LH_;}
-  const std::deque<eArray2> &get_queue_RH(void){return queue_RH_;}
-
+  const eArray2 &get_summation_LH(void) { return summation_LH_; }
+  const eArray2 &get_summation_RH(void) { return summation_RH_; }
+  const std::deque<eArray2> &get_queue_LH(void) { return queue_LH_; }
+  const std::deque<eArray2> &get_queue_RH(void) { return queue_RH_; }
 };
 }  // namespace flex
 

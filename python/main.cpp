@@ -58,22 +58,18 @@ bp::tuple correctEstimatedDeflections(Flex &self, const eVectorX &desiredTorque,
 }
 
 bp::tuple correctDeflections(Flex &self, const eVector2 &leftFlexingTorque,
-                                         const eVector2 &rightFlexingTorque,
-                                         const eVectorX &q, const eVectorX &dq) {
-
+                             const eVector2 &rightFlexingTorque,
+                             const eVectorX &q, const eVectorX &dq) {
   eVectorX correct_q(q.size()), correct_dq(dq.size());
   correct_q << q;
   correct_dq << dq;
-  self.correctDeflections(leftFlexingTorque, rightFlexingTorque, correct_q, correct_dq);
+  self.correctDeflections(leftFlexingTorque, rightFlexingTorque, correct_q,
+                          correct_dq);
   return bp::make_tuple(correct_q, correct_dq);
 }
 
-eVector2 get_sum_LH(Flex &self){
-  return self.get_summation_LH().matrix();
-}
-eVector2 get_sum_RH(Flex &self){
-  return self.get_summation_RH().matrix();
-}
+eVector2 get_sum_LH(Flex &self) { return self.get_summation_LH().matrix(); }
+eVector2 get_sum_RH(Flex &self) { return self.get_summation_RH().matrix(); }
 
 void exposeFlex() {
   bp::class_<Flex>("Flex", bp::init<>())
@@ -82,16 +78,21 @@ void exposeFlex() {
       .def("correctEstimatedDeflections", &correctEstimatedDeflections,
            bp::args("self", "desiredTorque", "q", "dq"))
       .def("correctDeflections", &correctDeflections,
-           bp::args("self", "leftFlexingTorque", "rightFlexingTorque", "q", "dq"))
-      .add_property( "leftFlex0",
-                    bp::make_function(&Flex::getLeftFlex0,
-                    bp::return_value_policy<bp::reference_existing_object>()),
-                    &Flex::setLeftFlex0)
-      .add_property( "rightFlex0",
-                    bp::make_function(&Flex::getRightFlex0,
-                    bp::return_value_policy<bp::reference_existing_object>()),
-                    &Flex::setRightFlex0) 
-      .def("reset",&Flex::reset, bp::args("self"))
+           bp::args("self", "leftFlexingTorque", "rightFlexingTorque", "q",
+                    "dq"))
+      .add_property(
+          "leftFlex0",
+          bp::make_function(
+              &Flex::getLeftFlex0,
+              bp::return_value_policy<bp::reference_existing_object>()),
+          &Flex::setLeftFlex0)
+      .add_property(
+          "rightFlex0",
+          bp::make_function(
+              &Flex::getRightFlex0,
+              bp::return_value_policy<bp::reference_existing_object>()),
+          &Flex::setRightFlex0)
+      .def("reset", &Flex::reset, bp::args("self"))
       .def("get_sum_LH", &get_sum_LH)
       .def("get_sum_RH", &get_sum_RH)
       // .def("get_queue_LH", bp::make_function(&Flex::get_queue_LH,
