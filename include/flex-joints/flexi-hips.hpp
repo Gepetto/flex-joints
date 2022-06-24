@@ -2,11 +2,11 @@
 #define _FLEXIBILITY_COMPENSATION_
 
 // #include "flex-joints/fwd.hpp"
-#include "flex-joints/fwd.hpp"
 #include <deque>
 
-namespace flex
-{
+#include "flex-joints/fwd.hpp"
+
+namespace flex {
 
 struct FlexSettings {
  public:
@@ -122,6 +122,6 @@ class Flex {
     rightFlex0_ = delta0;
   }  // is it used?
 };
-}  // namespace sobec
+}  // namespace flex
 
 #endif

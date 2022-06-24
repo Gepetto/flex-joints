@@ -1,10 +1,11 @@
 
-#include "flex-joints/fwd.hpp"
 #include <boost/python.hpp>
 #include <boost/python/return_internal_reference.hpp>
 #include <boost/python/suite/indexing/vector_indexing_suite.hpp>
 #include <eigenpy/eigenpy.hpp>
+
 #include "flex-joints/flexi-hips.hpp"
+#include "flex-joints/fwd.hpp"
 
 namespace flex {
 namespace python {
@@ -60,22 +61,17 @@ bp::tuple correctEstimatedDeflections(Flex &self, const eVectorX &desiredTorque,
 }
 
 void exposeFlex() {
-    bp::class_<Flex>("Flex", bp::init<>())
-        .def("initialize", &initialize, bp::args("self", "settings"))
-        .def("Settings", &get_settings, bp::args("self"))
-        .def("correctEstimatedDeflections", &correctEstimatedDeflections,
-            bp::args("self", "desiredTorque", "q", "dq"))
-        ;
+  bp::class_<Flex>("Flex", bp::init<>())
+      .def("initialize", &initialize, bp::args("self", "settings"))
+      .def("Settings", &get_settings, bp::args("self"))
+      .def("correctEstimatedDeflections", &correctEstimatedDeflections,
+           bp::args("self", "desiredTorque", "q", "dq"));
 }
-}
-}
+}  // namespace python
+}  // namespace flex
 
 BOOST_PYTHON_MODULE(flex_joints) {
-
-    eigenpy::enableEigenPy();
-    ENABLE_SPECIFIC_MATRIX_TYPE(Eigen::VectorXi); // (look at the @todo above)
-    flex::python::exposeFlex();
-
-
-
+  eigenpy::enableEigenPy();
+  ENABLE_SPECIFIC_MATRIX_TYPE(Eigen::VectorXi);  // (look at the @todo above)
+  flex::python::exposeFlex();
 }

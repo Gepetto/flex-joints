@@ -163,4 +163,4 @@ const eArray2 &Flex::movingAverage(const eArray2 &x, std::deque<eArray2> &queue,
   return average_;
 }
 
-}  // namespace sobec
+}  // namespace flex
