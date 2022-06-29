@@ -76,6 +76,9 @@ class Flex {
 
   // correctEstimatedDeflections:
   eMatrix2 adaptLeftYawl_, adaptRightYawl_;
+  eMatrix2 getLeftFlexing_, getRightFlexing_;
+  eMatrix2 leftFlexRotation_, rightFlexRotation_;
+  eVector2 flexingLeftTorque_, flexingRightTorque_;
 
   // correctHip:
   eMatrixRot rotationA_;

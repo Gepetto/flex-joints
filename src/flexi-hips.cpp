@@ -127,16 +127,29 @@ void Flex::correctEstimatedDeflections(const eVectorX &desiredTorque,
    *
    */
 
-  adaptLeftYawl_ =
-      Eigen::Rotation2Dd(q(settings_.left_hip_indices(0))) * xy_to_yx;
-  adaptRightYawl_ =
-      Eigen::Rotation2Dd(q(settings_.right_hip_indices(0))) * xy_to_yx;
+  leftFlexRotation_ = Eigen::Rotation2Dd(-q(settings_.left_hip_indices(0)));
+  rightFlexRotation_ = Eigen::Rotation2Dd(-q(settings_.right_hip_indices(0)));
 
-  correctDeflections(
-      adaptLeftYawl_ * desiredTorque.segment(settings_.left_hip_indices(1), 2),
-      adaptRightYawl_ *
-          desiredTorque.segment(settings_.right_hip_indices(1), 2),
-      q, dq);
+  leftFlexRotation_.col(1) *= cos(q(settings_.left_hip_indices(1)));
+  rightFlexRotation_.col(1) *= cos(q(settings_.right_hip_indices(1)));
+
+  getLeftFlexing_ = xy_to_yx * leftFlexRotation_;
+  getRightFlexing_ = xy_to_yx * rightFlexRotation_;
+
+  flexingLeftTorque_ = getLeftFlexing_ * desiredTorque.segment(settings_.left_hip_indices(1), 2);
+  flexingRightTorque_ = getRightFlexing_ * desiredTorque.segment(settings_.right_hip_indices(1), 2);
+  
+  correctDeflections(flexingLeftTorque_, flexingRightTorque_, q, dq);
+
+  // adaptLeftYawl_ = xy_to_yx * Eigen::Rotation2Dd(-q(settings_.left_hip_indices(0)));
+  // adaptRightYawl_ = xy_to_yx * Eigen::Rotation2Dd(-q(settings_.right_hip_indices(0)));
+
+  // correctDeflections(
+  //     adaptLeftYawl_ * 
+  //         desiredTorque.segment(settings_.left_hip_indices(1), 2),
+  //     adaptRightYawl_ *
+  //         desiredTorque.segment(settings_.right_hip_indices(1), 2),
+  //     q, dq);
 }
 
 /// @todo: Implement methods for a better estimation of the flexing torque. i.e.
