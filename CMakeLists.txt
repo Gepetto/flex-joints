@@ -16,24 +16,28 @@ set(CUSTOM_HEADER_DIR ${PROJECT_NAME})
 
 # Check if the submodule cmake have been initialized
 set(JRL_CMAKE_MODULES "${CMAKE_CURRENT_LIST_DIR}/cmake")
-IF(NOT EXISTS "${CMAKE_SOURCE_DIR}/cmake/base.cmake")
-  IF(${CMAKE_VERSION} VERSION_LESS "3.14.0")
-    MESSAGE(FATAL_ERROR "\nPlease run the following command first:\ngit submodule update --init\n")
-  ELSE()
+if(NOT EXISTS "${CMAKE_SOURCE_DIR}/cmake/base.cmake")
+  if(${CMAKE_VERSION} VERSION_LESS "3.14.0")
+    message(
+      FATAL_ERROR
+        "\nPlease run the following command first:\ngit submodule update --init\n"
+    )
+  else()
     include(FetchContent)
-    FetchContent_Declare("jrl-cmakemodules"
+    FetchContent_Declare(
+      "jrl-cmakemodules"
       GIT_REPOSITORY "https://github.com/jrl-umi3218/jrl-cmakemodules.git")
     FetchContent_MakeAvailable("jrl-cmakemodules")
     FetchContent_GetProperties("jrl-cmakemodules" SOURCE_DIR JRL_CMAKE_MODULES)
-  ENDIF()
-ENDIF()
+  endif()
+endif()
 
 # JRL-cmakemodule setup
 include("${JRL_CMAKE_MODULES}/base.cmake")
 include("${JRL_CMAKE_MODULES}/boost.cmake")
 
 # Project definition
-COMPUTE_PROJECT_ARGS(PROJECT_ARGS LANGUAGES CXX)
+compute_project_args(PROJECT_ARGS LANGUAGES CXX)
 project(${PROJECT_NAME} ${PROJECT_ARGS})
 
 # Project dependencies
@@ -43,22 +47,19 @@ if(BUILD_TESTING)
 endif()
 
 if(BUILD_PYTHON_INTERFACE)
-  ADD_PROJECT_DEPENDENCY(eigenpy 2.7.10 REQUIRED)
+  add_project_dependency(eigenpy 2.7.10 REQUIRED)
   string(REGEX REPLACE "-" "_" PY_NAME ${PROJECT_NAME})
   set(${PY_NAME}_INSTALL_DIR ${PYTHON_SITELIB}/${PY_NAME})
 endif()
 
 # Main Library
-set(${PROJECT_NAME}_HEADERS
-  include/${PROJECT_NAME}/fwd.hpp
-  include/${PROJECT_NAME}/flexi-hips.hpp
-  )
+set(${PROJECT_NAME}_HEADERS include/${PROJECT_NAME}/fwd.hpp
+                            include/${PROJECT_NAME}/flexi-hips.hpp)
 
-set(${PROJECT_NAME}_SOURCES
-  src/flexi-hips.cpp
-  )
+set(${PROJECT_NAME}_SOURCES src/flexi-hips.cpp)
 
-add_library(${PROJECT_NAME} SHARED ${${PROJECT_NAME}_SOURCES} ${${PROJECT_NAME}_HEADERS})
+add_library(${PROJECT_NAME} SHARED ${${PROJECT_NAME}_SOURCES}
+                                   ${${PROJECT_NAME}_HEADERS})
 target_link_libraries(${PROJECT_NAME} PUBLIC Eigen3::Eigen)
 target_include_directories(${PROJECT_NAME} PUBLIC $<INSTALL_INTERFACE:include>)
 
@@ -77,5 +78,8 @@ if(BUILD_TESTING)
 endif()
 
 # Installation
-install(TARGETS ${PROJECT_NAME} EXPORT ${TARGETS_EXPORT_NAME} DESTINATION lib)
+install(
+  TARGETS ${PROJECT_NAME}
+  EXPORT ${TARGETS_EXPORT_NAME}
+  DESTINATION lib)
 install(FILES package.xml DESTINATION share/${PROJECT_NAME})
