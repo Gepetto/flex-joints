@@ -31,7 +31,6 @@ ENDIF()
 # JRL-cmakemodule setup
 include("${JRL_CMAKE_MODULES}/base.cmake")
 include("${JRL_CMAKE_MODULES}/boost.cmake")
-include("${JRL_CMAKE_MODULES}/python.cmake")
 
 # Project definition
 COMPUTE_PROJECT_ARGS(PROJECT_ARGS LANGUAGES CXX)
@@ -44,11 +43,9 @@ if(BUILD_TESTING)
 endif()
 
 if(BUILD_PYTHON_INTERFACE)
-  FINDPYTHON()
-  find_package(eigenpy REQUIRED)
+  ADD_PROJECT_DEPENDENCY(eigenpy 2.7.10 REQUIRED)
   string(REGEX REPLACE "-" "_" PY_NAME ${PROJECT_NAME})
   set(${PY_NAME}_INSTALL_DIR ${PYTHON_SITELIB}/${PY_NAME})
-  SEARCH_FOR_BOOST_PYTHON()
 endif()
 
 # Main Library
