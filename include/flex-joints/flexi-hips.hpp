@@ -14,6 +14,7 @@ struct FlexSettings {
   eVector2 left_damping = 2 * left_stiffness.cwiseSqrt();    // (y, x) [Nm/rad]
   eVector2 right_stiffness = eVector2(15000, 15000);         // (y, x) [Nm/rad]
   eVector2 right_damping = 2 * right_stiffness.cwiseSqrt();  // (y, x) [Nm/rad]
+  eVector3 flexToJoint = eVector3(0, 0, -0.09);              // (x, y, z) [m]
   Eigen::Array3i left_hip_indices = Eigen::Array3i::Zero();
   Eigen::Array3i right_hip_indices = Eigen::Array3i::Zero();
 
@@ -26,6 +27,7 @@ struct FlexSettings {
     out << "    left_damping: " << obj.left_damping << "\n";
     out << "    right_stiffness: " << obj.right_stiffness << "\n";
     out << "    left_damping: " << obj.right_damping << "\n";
+    out << "    flexToJoint: " << obj.flexToJoint << "\n";
     out << "    left_hip_indices: " << obj.left_hip_indices << "\n";
     out << "    right_hip_indices: " << obj.right_hip_indices << "\n";
     out << "    filtered: " << obj.filtered << "\n";
@@ -40,6 +42,7 @@ struct FlexSettings {
     test &= lhs.left_damping == rhs.left_damping;
     test &= lhs.right_stiffness == rhs.right_stiffness;
     test &= lhs.right_damping == rhs.right_damping;
+    test &= lhs.flexToJoint == rhs.flexToJoint;
     test &= lhs.dt == rhs.dt;
     test &= lhs.left_hip_indices.matrix() == rhs.left_hip_indices.matrix();
     test &= lhs.right_hip_indices.matrix() == rhs.right_hip_indices.matrix();
@@ -74,10 +77,16 @@ class Flex {
   eVector2 leftFlex_, rightFlex_;
   eVector2 leftFlexRate_, rightFlexRate_;
 
+  //estimateFlexingTorque:
+  eMatrix2 flexRotation_;
+  eMatrix2 getFlexing_;
+  eVector2 flexingTorque_;
+  eMatrixRot deformRotation_;
+  eVector3 currentFlexToJoint_;
+  eVector3 r_x_F_;
+
+
   // correctEstimatedDeflections:
-  eMatrix2 adaptLeftYawl_, adaptRightYawl_;
-  eMatrix2 getLeftFlexing_, getRightFlexing_;
-  eMatrix2 leftFlexRotation_, rightFlexRotation_;
   eVector2 flexingLeftTorque_, flexingRightTorque_;
 
   // correctHip:
@@ -109,6 +118,14 @@ class Flex {
                                     const eArray2 &delta0,
                                     const eArray2 &stiffness,
                                     const eArray2 &damping, const double dt);
+
+  const eVector2 &estimateFlexingTorque(const eVector3 &hipPos,
+                                        const eVector3 &jointTorque);
+
+  const eVector2 &estimateFlexingTorque(const eVector3 &hipPos,
+                                        const eVector3 &jointTorque,
+                                        const eVector2 &delta0,
+                                        const eVector3 &jointForce);
 
   void correctDeflections(const eVector2 &leftFlexingTorque,
                           const eVector2 &rightFlexingTorque, eVectorX &q,

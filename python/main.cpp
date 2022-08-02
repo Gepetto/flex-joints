@@ -18,6 +18,7 @@ void initialize(Flex &self, const bp::dict &settings) {
   conf.left_damping = bp::extract<eVector2>(settings["left_damping"]);
   conf.right_stiffness = bp::extract<eVector2>(settings["right_stiffness"]);
   conf.right_damping = bp::extract<eVector2>(settings["right_damping"]);
+  conf.flexToJoint = bp::extract<eVector3>(settings["flexToJoint"]);
   conf.dt = bp::extract<double>(settings["dt"]);
   conf.MA_duration = bp::extract<double>(settings["MA_duration"]);
   eVector3 left_hip_indices =
@@ -39,6 +40,7 @@ bp::dict get_settings(Flex &self) {
   settings["left_damping"] = conf.left_damping;
   settings["right_stiffness"] = conf.right_stiffness;
   settings["right_damping"] = conf.right_damping;
+  settings["flexToJoint"] = conf.flexToJoint;
   settings["dt"] = conf.dt;
   settings["filtered"] = conf.filtered;
   settings["MA_duration"] = conf.MA_duration;
@@ -75,11 +77,14 @@ void exposeFlex() {
   bp::class_<Flex>("Flex", bp::init<>())
       .def("initialize", &initialize, bp::args("self", "settings"))
       .def("Settings", &get_settings, bp::args("self"))
-      .def("correctEstimatedDeflections", &correctEstimatedDeflections,
-           bp::args("self", "desiredTorque", "q", "dq"))
+      .def("computeDeflection", bp::make_function(&Flex::computeDeflection, bp::return_value_policy<bp::reference_existing_object>()))
+      .def("estimateFlexingTorque", bp::make_function<const eVector2 & (Flex::*)(const eVector3 &, const eVector3 &)>(&Flex::estimateFlexingTorque, bp::return_value_policy<bp::reference_existing_object>()))
+      .def("estimateFlexingTorque", bp::make_function<const eVector2 & (Flex::*)(const eVector3 &, const eVector3 &, const eVector2 &, const eVector3 &)>(&Flex::estimateFlexingTorque, bp::return_value_policy<bp::reference_existing_object>()))
       .def("correctDeflections", &correctDeflections,
            bp::args("self", "leftFlexingTorque", "rightFlexingTorque", "q",
                     "dq"))
+      .def("correctEstimatedDeflections", &correctEstimatedDeflections,
+           bp::args("self", "desiredTorque", "q", "dq"))
       .add_property(
           "leftFlex0",
           bp::make_function(

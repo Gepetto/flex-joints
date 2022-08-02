@@ -17,12 +17,14 @@ class DynamicsTestCase(unittest.TestCase):
         # [LH_pitch, LH_roll, RH_pitch, RH_roll]
         H_stiff = np.array([2200, 2200, 5000, 5000])
         H_damp = 2 * np.sqrt(H_stiff)
+        flexToJoint = np.array([0, 0, 0.09])
 
         settings = dict(
             left_stiffness=H_stiff[:2],
             left_damping=H_damp[:2],
             right_stiffness=H_stiff[:2],
             right_damping=H_damp[:2],
+            flexToJoint = flexToJoint,
             dt=0.002,
             MA_duration=0.01,
             left_hip_indices=np.array([0, 1, 2]),

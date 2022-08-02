@@ -116,6 +116,31 @@ void Flex::correctDeflections(const eVector2 &leftFlexingTorque,
   correctHip(rightFlex_, rightFlexRate_, q, dq, settings_.right_hip_indices);
 }
 
+const eVector2 &Flex::estimateFlexingTorque(const eVector3 &hipPos,
+                                            const eVector3 &jointTorque){
+
+  flexRotation_ = Eigen::Rotation2Dd(-hipPos(0));
+  flexRotation_.col(1) *= cos(hipPos(1));
+  getFlexing_ = xy_to_yx * flexRotation_;
+
+  flexingTorque_ = getFlexing_ * jointTorque.tail<2>();
+  return flexingTorque_;
+}
+
+const eVector2 &Flex::estimateFlexingTorque(const eVector3 &hipPos,
+                                            const eVector3 &jointTorque,
+                                            const eVector2 &delta0,
+                                            const eVector3 &jointForce){
+                                           
+  deformRotation_ = Eigen::AngleAxisd(delta0(0), eVector3::UnitY()) * 
+                    Eigen::AngleAxisd(delta0(1), eVector3::UnitX());
+  currentFlexToJoint_ = deformRotation_ * settings_.flexToJoint;
+  r_x_F_ = currentFlexToJoint_.cross(jointForce);
+
+  flexingTorque_ = estimateFlexingTorque(hipPos, jointTorque) + r_x_F_.head<2>(); // check sign of rxF
+  return flexingTorque_;
+}
+
 void Flex::correctEstimatedDeflections(const eVectorX &desiredTorque,
                                        eVectorX &q, eVectorX &dq) {
   /**
@@ -126,30 +151,13 @@ void Flex::correctEstimatedDeflections(const eVectorX &desiredTorque,
    * q and dq are the robot posture and velocities without the freeFlyer part.
    *
    */
-
-  leftFlexRotation_ = Eigen::Rotation2Dd(-q(settings_.left_hip_indices(0)));
-  rightFlexRotation_ = Eigen::Rotation2Dd(-q(settings_.right_hip_indices(0)));
-
-  leftFlexRotation_.col(1) *= cos(q(settings_.left_hip_indices(1)));
-  rightFlexRotation_.col(1) *= cos(q(settings_.right_hip_indices(1)));
-
-  getLeftFlexing_ = xy_to_yx * leftFlexRotation_;
-  getRightFlexing_ = xy_to_yx * rightFlexRotation_;
-
-  flexingLeftTorque_ = getLeftFlexing_ * desiredTorque.segment(settings_.left_hip_indices(1), 2);
-  flexingRightTorque_ = getRightFlexing_ * desiredTorque.segment(settings_.right_hip_indices(1), 2);
   
+  flexingLeftTorque_ = estimateFlexingTorque(q.segment(settings_.left_hip_indices(0), 3),
+                                             desiredTorque.segment(settings_.left_hip_indices(0), 3));
+  flexingRightTorque_ = estimateFlexingTorque(q.segment(settings_.right_hip_indices(0), 3),
+                                              desiredTorque.segment(settings_.right_hip_indices(0), 3));                                          
+
   correctDeflections(flexingLeftTorque_, flexingRightTorque_, q, dq);
-
-  // adaptLeftYawl_ = xy_to_yx * Eigen::Rotation2Dd(-q(settings_.left_hip_indices(0)));
-  // adaptRightYawl_ = xy_to_yx * Eigen::Rotation2Dd(-q(settings_.right_hip_indices(0)));
-
-  // correctDeflections(
-  //     adaptLeftYawl_ * 
-  //         desiredTorque.segment(settings_.left_hip_indices(1), 2),
-  //     adaptRightYawl_ *
-  //         desiredTorque.segment(settings_.right_hip_indices(1), 2),
-  //     q, dq);
 }
 
 /// @todo: Implement methods for a better estimation of the flexing torque. i.e.
