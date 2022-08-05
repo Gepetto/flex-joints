@@ -119,6 +119,8 @@ class Flex {
                                     const eArray2 &stiffness,
                                     const eArray2 &damping, const double dt);
 
+  const eVector3 &currentFlexToJoint(const eVector2 &delta);
+
   const eVector2 &estimateFlexingTorque(const eVector3 &hipPos,
                                         const eVector3 &jointTorque);
 
@@ -130,6 +132,11 @@ class Flex {
   void correctDeflections(const eVector2 &leftFlexingTorque,
                           const eVector2 &rightFlexingTorque, eVectorX &q,
                           eVectorX &dq);
+
+  void correctEstimatedDeflections(const eVectorX &desiredTorque,
+                                   eVectorX &q, eVectorX &dq, 
+                                   const eVector3 &leftForce,
+                                   const eVector3 &rightForce);
 
   void correctEstimatedDeflections(const eVectorX &desiredTorque, eVectorX &q,
                                    eVectorX &dq);

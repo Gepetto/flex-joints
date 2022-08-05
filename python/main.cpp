@@ -59,6 +59,16 @@ bp::tuple correctEstimatedDeflections(Flex &self, const eVectorX &desiredTorque,
   return bp::make_tuple(correct_q, correct_dq);
 }
 
+bp::tuple correctEstimatedDeflections(Flex &self, const eVectorX &desiredTorque,
+                                      const eVectorX &q, const eVectorX &dq, 
+                                      const eVector3 &leftForce, const eVector3 &rightForce) {
+  eVectorX correct_q(q.size()), correct_dq(dq.size());
+  correct_q << q;
+  correct_dq << dq;
+  self.correctEstimatedDeflections(desiredTorque, correct_q, correct_dq, leftForce, rightForce);
+  return bp::make_tuple(correct_q, correct_dq);
+}
+
 bp::tuple correctDeflections(Flex &self, const eVector2 &leftFlexingTorque,
                              const eVector2 &rightFlexingTorque,
                              const eVectorX &q, const eVectorX &dq) {
@@ -70,6 +80,15 @@ bp::tuple correctDeflections(Flex &self, const eVector2 &leftFlexingTorque,
   return bp::make_tuple(correct_q, correct_dq);
 }
 
+const eVector2 &computeDeflection(Flex &self, const eVector2 &torques,
+                                       const eVector2 &delta0,
+                                       const eVector2 &stiffness,
+                                       const eVector2 &damping, 
+                                       double dt){
+
+  return self.computeDeflection(torques.array(), delta0.array(), stiffness.array(), damping.array(), dt);
+}
+
 eVector2 get_sum_LH(Flex &self) { return self.get_summation_LH().matrix(); }
 eVector2 get_sum_RH(Flex &self) { return self.get_summation_RH().matrix(); }
 
@@ -77,14 +96,17 @@ void exposeFlex() {
   bp::class_<Flex>("Flex", bp::init<>())
       .def("initialize", &initialize, bp::args("self", "settings"))
       .def("Settings", &get_settings, bp::args("self"))
-      .def("computeDeflection", bp::make_function(&Flex::computeDeflection, bp::return_value_policy<bp::reference_existing_object>()))
+      .def("computeDeflection", bp::make_function(&computeDeflection, bp::return_value_policy<bp::reference_existing_object>(), bp::args("self", "torques", "delta0", "stiffness", "damping", "dt")))
+      .def("currentFlexToJoint", bp::make_function(&Flex::currentFlexToJoint, bp::return_value_policy<bp::reference_existing_object>(), bp::args("self", "delta")))
       .def("estimateFlexingTorque", bp::make_function<const eVector2 & (Flex::*)(const eVector3 &, const eVector3 &)>(&Flex::estimateFlexingTorque, bp::return_value_policy<bp::reference_existing_object>()))
       .def("estimateFlexingTorque", bp::make_function<const eVector2 & (Flex::*)(const eVector3 &, const eVector3 &, const eVector2 &, const eVector3 &)>(&Flex::estimateFlexingTorque, bp::return_value_policy<bp::reference_existing_object>()))
       .def("correctDeflections", &correctDeflections,
            bp::args("self", "leftFlexingTorque", "rightFlexingTorque", "q",
                     "dq"))
-      .def("correctEstimatedDeflections", &correctEstimatedDeflections,
+      .def<bp::tuple (Flex &, const eVectorX &, const eVectorX &, const eVectorX &)>("correctEstimatedDeflections", &correctEstimatedDeflections,
            bp::args("self", "desiredTorque", "q", "dq"))
+      .def<bp::tuple (Flex &, const eVectorX &, const eVectorX &, const eVectorX &, const eVector3 &, const eVector3 &)>("correctEstimatedDeflections", &correctEstimatedDeflections,
+           bp::args("self", "desiredTorque", "q", "dq", "leftForce", "rightForce"))  
       .add_property(
           "leftFlex0",
           bp::make_function(
