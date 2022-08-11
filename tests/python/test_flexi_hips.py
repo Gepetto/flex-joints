@@ -211,7 +211,6 @@ class FlexTestCase(unittest.TestCase):
         flexTau_force_m = self.flex.estimateFlexingTorque(
             np.hstack([0, -delta[1], -delta[0]]), tau_x, delta, -force_z
         ).copy()
-        print(flexTau, flexTau_force_m, flexTau_force_p)
 
         self.assertTrue((np.abs(flexTau) <= np.abs(flexTau_force_p)).all())
         self.assertTrue((np.abs(flexTau) >= np.abs(flexTau_force_m)).all())
