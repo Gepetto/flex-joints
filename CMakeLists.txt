@@ -8,10 +8,13 @@ set(PROJECT_URL https://github.com/${PROJECT_NAMESPACE}/${PROJECT_NAME})
 
 # Project options
 option(BUILD_PYTHON_INTERFACE "Build the python binding" ON)
+option(INSTALL_PYTHON_INTERFACE_ONLY "Instal *ONLY* the python bindings" OFF)
 option(SUFFIX_SO_VERSION "Suffix library name with its version" ON)
 
 # Project configuration
-set(PROJECT_USE_CMAKE_EXPORT TRUE)
+if(NOT INSTALL_PYTHON_INTERFACE_ONLY)
+  set(PROJECT_USE_CMAKE_EXPORT TRUE)
+endif()
 set(CUSTOM_HEADER_DIR ${PROJECT_NAME})
 
 # Check if the submodule cmake have been initialized
@@ -78,8 +81,10 @@ if(BUILD_TESTING)
 endif()
 
 # Installation
-install(
-  TARGETS ${PROJECT_NAME}
-  EXPORT ${TARGETS_EXPORT_NAME}
-  DESTINATION lib)
-install(FILES package.xml DESTINATION share/${PROJECT_NAME})
+if(NOT INSTALL_PYTHON_INTERFACE_ONLY)
+  install(
+    TARGETS ${PROJECT_NAME}
+    EXPORT ${TARGETS_EXPORT_NAME}
+    DESTINATION lib)
+  install(FILES package.xml DESTINATION share/${PROJECT_NAME})
+endif()
