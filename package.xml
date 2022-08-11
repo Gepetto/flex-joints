@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="3">
   <name>flex-joints</name>
-  <version>1.0.2</version>
+  <version>1.0.3</version>
   <description>adaptation for rigid control on flexible devices</description>
   <author email="nahuel.villa@laas.fr">Nahuel Villa</author>
   <maintainer email="guilhem.saurel@laas.fr">Guilhem Saurel</maintainer>
