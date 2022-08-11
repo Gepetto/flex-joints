@@ -24,7 +24,7 @@ class FlexTestCase(unittest.TestCase):
             left_damping=H_damp[:2],
             right_stiffness=H_stiff[:2],
             right_damping=H_damp[:2],
-            flexToJoint = flexToJoint,
+            flexToJoint=flexToJoint,
             dt=0.002,
             MA_duration=0.01,
             left_hip_indices=np.array([0, 1, 2]),
@@ -137,92 +137,102 @@ class FlexTestCase(unittest.TestCase):
 
         self.assertTrue((corrected_q0 == corrected_q3).all())
         self.assertTrue((corrected_dq0 == corrected_dq3).all())
-        
+
     def test_flexing_torque(self):
-        
-        T = (np.random.rand()*2-1)*80
-        t = (np.random.rand()*2-1)*0.4
+
+        T = (np.random.rand() * 2 - 1) * 80
+        t = (np.random.rand() * 2 - 1) * 0.4
         tau_0 = np.zeros(3)
         tau_z = np.array([T, 0, 0])
         tau_x = np.array([0, T, 0])
         tau_y = np.array([0, 0, T])
-        
+
         hip_0 = np.zeros(3)
         hip_z = np.array([t, 0, 0])
         hip_x = np.array([0, t, 0])
         hip_y = np.array([0, 0, t])
-        
+
         flexTau = self.flex.estimateFlexingTorque(hip_0, tau_0)
         self.assertTrue((flexTau == [0, 0]).all())
-        
+
         flexTau = self.flex.estimateFlexingTorque(hip_0, tau_z)
         self.assertTrue((flexTau == [0, 0]).all())
-        
+
         flexTau = self.flex.estimateFlexingTorque(hip_0, tau_x)
         self.assertTrue((flexTau == [0, T]).all())
-        
+
         flexTau = self.flex.estimateFlexingTorque(hip_0, tau_y)
         self.assertTrue((flexTau == [T, 0]).all())
-        
+
         flexTau = self.flex.estimateFlexingTorque(hip_z, tau_z)
         self.assertTrue((flexTau == [0, 0]).all())
-        
+
         flexTau = self.flex.estimateFlexingTorque(hip_x, tau_z)
         self.assertTrue((flexTau == [0, 0]).all())
-        
+
         flexTau = self.flex.estimateFlexingTorque(hip_y, tau_z)
         self.assertTrue((flexTau == [0, 0]).all())
-        
+
         flexTau = self.flex.estimateFlexingTorque(hip_z, tau_x)
         self.assertTrue((np.abs(flexTau) <= np.abs([T, T])).all())
-        
+
         flexTau = self.flex.estimateFlexingTorque(hip_z, tau_y)
-        self.assertTrue((np.abs(flexTau) < np.abs([T, T])).all() and (np.abs(flexTau) > [0, 0]).all())
-        
+        self.assertTrue(
+            (np.abs(flexTau) < np.abs([T, T])).all()
+            and (np.abs(flexTau) > [0, 0]).all()
+        )
+
         flexTau = self.flex.estimateFlexingTorque(hip_y, tau_y)
         self.assertTrue((flexTau == [T, 0]).all())
-        
+
         flexTau = self.flex.estimateFlexingTorque(hip_x, tau_x)
         self.assertTrue((flexTau == [0, T]).all())
-        
+
         flexTau = self.flex.estimateFlexingTorque(hip_x, tau_y)
         self.assertTrue((np.abs(flexTau) <= np.abs([T, 0])).all())
-        
+
         flexTau = self.flex.estimateFlexingTorque(hip_y, tau_x)
         self.assertTrue((flexTau == [0, T]).all())
-        
-        delta = np.array([0,0])
+
+        delta = np.array([0, 0])
         dt = 0.002
         for i in range(1000):
-            delta = self.flex.computeDeflection(tau_x[:2], delta, self.H_stiff[:2], self.H_damp[:2], dt)
-            
-        force_z = np.array([0,0,np.abs(10*T)])
-        flexTau = self.flex.estimateFlexingTorque(np.hstack([0, -delta[1], -delta[0]]),
-                                                  tau_x).copy()
-        flexTau_force_p = self.flex.estimateFlexingTorque(np.hstack([0, -delta[1], -delta[0]]),
-                                                          tau_x, delta, force_z).copy()
-        flexTau_force_m = self.flex.estimateFlexingTorque(np.hstack([0, -delta[1], -delta[0]]),
-                                                          tau_x, delta, -force_z).copy()
+            delta = self.flex.computeDeflection(
+                tau_x[:2], delta, self.H_stiff[:2], self.H_damp[:2], dt
+            )
+
+        force_z = np.array([0, 0, np.abs(10 * T)])
+        flexTau = self.flex.estimateFlexingTorque(
+            np.hstack([0, -delta[1], -delta[0]]), tau_x
+        ).copy()
+        flexTau_force_p = self.flex.estimateFlexingTorque(
+            np.hstack([0, -delta[1], -delta[0]]), tau_x, delta, force_z
+        ).copy()
+        flexTau_force_m = self.flex.estimateFlexingTorque(
+            np.hstack([0, -delta[1], -delta[0]]), tau_x, delta, -force_z
+        ).copy()
         print(flexTau, flexTau_force_m, flexTau_force_p)
-        
-        self.assertTrue((np.abs(flexTau)<=np.abs(flexTau_force_p)).all())
-        self.assertTrue((np.abs(flexTau)>=np.abs(flexTau_force_m)).all())
-        
-        # Note: as expected, positive vertical forces (supporting hip) tend to 
+
+        self.assertTrue((np.abs(flexTau) <= np.abs(flexTau_force_p)).all())
+        self.assertTrue((np.abs(flexTau) >= np.abs(flexTau_force_m)).all())
+
+        # Note: as expected, positive vertical forces (supporting hip) tend to
         # increase the magniture of the flexing torque, while negative verical
         # forces (swinging hip) tends to reduce it.
-        
+
     def test_current_flex_to_joint(self):
-        
+
         delta = np.random.rand(2) - 0.5
-        
+
         original = self.flex.Settings()["flexToJoint"]
         originalComputed = self.flex.currentFlexToJoint(np.array([0, 0])).copy()
         current = self.flex.currentFlexToJoint(delta)
-        
-        self.assertTrue((np.linalg.norm(original)-np.linalg.norm(current) < 1e-10).all())
+
+        self.assertTrue(
+            (np.linalg.norm(original) - np.linalg.norm(current) < 1e-10).all()
+        )
         self.assertTrue((original == originalComputed).all())
-        
+
 
 if __name__ == "__main__":
     unittest.main()

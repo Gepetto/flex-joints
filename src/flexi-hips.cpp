@@ -117,8 +117,7 @@ void Flex::correctDeflections(const eVector2 &leftFlexingTorque,
 }
 
 const eVector2 &Flex::estimateFlexingTorque(const eVector3 &hipPos,
-                                            const eVector3 &jointTorque){
-
+                                            const eVector3 &jointTorque) {
   flexRotation_ = Eigen::Rotation2Dd(-hipPos(0));
   flexRotation_.col(1) *= cos(hipPos(1));
   getFlexing_ = xy_to_yx * flexRotation_;
@@ -127,8 +126,8 @@ const eVector2 &Flex::estimateFlexingTorque(const eVector3 &hipPos,
   return flexingTorque_;
 }
 
-const eVector3 &Flex::currentFlexToJoint(const eVector2 &delta){
-  deformRotation_ = Eigen::AngleAxisd(delta(0), eVector3::UnitY()) * 
+const eVector3 &Flex::currentFlexToJoint(const eVector2 &delta) {
+  deformRotation_ = Eigen::AngleAxisd(delta(0), eVector3::UnitY()) *
                     Eigen::AngleAxisd(delta(1), eVector3::UnitX());
   currentFlexToJoint_ = deformRotation_ * settings_.flexToJoint;
   return currentFlexToJoint_;
@@ -137,39 +136,40 @@ const eVector3 &Flex::currentFlexToJoint(const eVector2 &delta){
 const eVector2 &Flex::estimateFlexingTorque(const eVector3 &hipPos,
                                             const eVector3 &jointTorque,
                                             const eVector2 &delta0,
-                                            const eVector3 &jointForce){
-                                           
+                                            const eVector3 &jointForce) {
   currentFlexToJoint_ = currentFlexToJoint(delta0);
   r_x_F_ = currentFlexToJoint_.cross(jointForce);
 
-  flexingTorque_ = estimateFlexingTorque(hipPos, jointTorque) + xy_to_yx*r_x_F_.head<2>();
+  flexingTorque_ =
+      estimateFlexingTorque(hipPos, jointTorque) + xy_to_yx * r_x_F_.head<2>();
   return flexingTorque_;
 }
 
 void Flex::correctEstimatedDeflections(const eVectorX &desiredTorque,
-                                       eVectorX &q, eVectorX &dq, 
+                                       eVectorX &q, eVectorX &dq,
                                        const eVector3 &leftForce,
                                        const eVector3 &rightForce) {
-    /**
+  /**
    * Arguments:
    *
    * desired torque are the values commanded by the controller.
    *
    * q and dq are the robot posture and velocities without the freeFlyer part.
-   *  
-   * Each force (leftForce, rightForce) must be provided in the local hip joint frame.
+   *
+   * Each force (leftForce, rightForce) must be provided in the local hip joint
+   * frame.
    */
-                            
-  
-  flexingLeftTorque_ = estimateFlexingTorque(q.segment(settings_.left_hip_indices(0), 3),
-                                             desiredTorque.segment(settings_.left_hip_indices(0), 3), 
-                                             leftFlex0_, leftForce);
-  flexingRightTorque_ = estimateFlexingTorque(q.segment(settings_.right_hip_indices(0), 3),
-                                              desiredTorque.segment(settings_.right_hip_indices(0), 3),
-                                              rightFlex0_, rightForce);                                          
+
+  flexingLeftTorque_ = estimateFlexingTorque(
+      q.segment(settings_.left_hip_indices(0), 3),
+      desiredTorque.segment(settings_.left_hip_indices(0), 3), leftFlex0_,
+      leftForce);
+  flexingRightTorque_ = estimateFlexingTorque(
+      q.segment(settings_.right_hip_indices(0), 3),
+      desiredTorque.segment(settings_.right_hip_indices(0), 3), rightFlex0_,
+      rightForce);
 
   correctDeflections(flexingLeftTorque_, flexingRightTorque_, q, dq);
-
 }
 
 void Flex::correctEstimatedDeflections(const eVectorX &desiredTorque,
@@ -182,11 +182,13 @@ void Flex::correctEstimatedDeflections(const eVectorX &desiredTorque,
    * q and dq are the robot posture and velocities without the freeFlyer part.
    *
    */
-  
-  flexingLeftTorque_ = estimateFlexingTorque(q.segment(settings_.left_hip_indices(0), 3),
-                                             desiredTorque.segment(settings_.left_hip_indices(0), 3));
-  flexingRightTorque_ = estimateFlexingTorque(q.segment(settings_.right_hip_indices(0), 3),
-                                              desiredTorque.segment(settings_.right_hip_indices(0), 3));                                          
+
+  flexingLeftTorque_ = estimateFlexingTorque(
+      q.segment(settings_.left_hip_indices(0), 3),
+      desiredTorque.segment(settings_.left_hip_indices(0), 3));
+  flexingRightTorque_ = estimateFlexingTorque(
+      q.segment(settings_.right_hip_indices(0), 3),
+      desiredTorque.segment(settings_.right_hip_indices(0), 3));
 
   correctDeflections(flexingLeftTorque_, flexingRightTorque_, q, dq);
 }
