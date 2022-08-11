@@ -151,6 +151,11 @@ class Flex {
   void setRightFlex0(const eVector2 &delta0) { rightFlex0_ = delta0; }
   const eVector2 &getRightFlex0(void) { return rightFlex0_; }
 
+  const eVector2 getLeftFlex(void){return leftFlex_;}
+  const eVector2 getRightFlex(void){return rightFlex_;}
+  const eVector2 getLeftFlexRate(void){return leftFlexRate_;}
+  const eVector2 getRightFlexRate(void){return rightFlexRate_;}
+
   const eArray2 &get_summation_LH(void) { return summation_LH_; }
   const eArray2 &get_summation_RH(void) { return summation_RH_; }
   const std::deque<eArray2> &get_queue_LH(void) { return queue_LH_; }
