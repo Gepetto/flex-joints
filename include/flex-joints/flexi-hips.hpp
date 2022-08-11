@@ -77,14 +77,13 @@ class Flex {
   eVector2 leftFlex_, rightFlex_;
   eVector2 leftFlexRate_, rightFlexRate_;
 
-  //estimateFlexingTorque:
+  // estimateFlexingTorque:
   eMatrix2 flexRotation_;
   eMatrix2 getFlexing_;
   eVector2 flexingTorque_;
   eMatrixRot deformRotation_;
   eVector3 currentFlexToJoint_;
   eVector3 r_x_F_;
-
 
   // correctEstimatedDeflections:
   eVector2 flexingLeftTorque_, flexingRightTorque_;
@@ -133,9 +132,8 @@ class Flex {
                           const eVector2 &rightFlexingTorque, eVectorX &q,
                           eVectorX &dq);
 
-  void correctEstimatedDeflections(const eVectorX &desiredTorque,
-                                   eVectorX &q, eVectorX &dq, 
-                                   const eVector3 &leftForce,
+  void correctEstimatedDeflections(const eVectorX &desiredTorque, eVectorX &q,
+                                   eVectorX &dq, const eVector3 &leftForce,
                                    const eVector3 &rightForce);
 
   void correctEstimatedDeflections(const eVectorX &desiredTorque, eVectorX &q,
