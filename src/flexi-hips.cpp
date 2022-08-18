@@ -222,11 +222,11 @@ void Flex::reset() {
   queue_RH_.clear();
 }
 
-void Flex::setLeftStiffness(const eVector2& stiffness){
+void Flex::setLeftStiffness(const eVector2 &stiffness) {
   settings_.left_stiffness = stiffness;
   settings_.left_damping = 2 * stiffness.cwiseSqrt();
 }
-void Flex::setRightStiffness(const eVector2& stiffness){
+void Flex::setRightStiffness(const eVector2 &stiffness) {
   settings_.right_stiffness = stiffness;
   settings_.right_damping = 2 * stiffness.cwiseSqrt();
 }
