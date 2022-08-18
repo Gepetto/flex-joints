@@ -141,6 +141,10 @@ class Flex {
 
   const FlexSettings &getSettings() { return settings_; }
 
+  void setLeftStiffness(const eVector2& stiffness);
+  void setRightStiffness(const eVector2& stiffness);
+
+
   void reset();
 
   void setLeftFlex0(const eVector2 &delta0) { leftFlex0_ = delta0; }
