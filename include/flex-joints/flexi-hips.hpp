@@ -143,6 +143,8 @@ class Flex {
 
   void setLeftStiffness(const eVector2 &stiffness);
   void setRightStiffness(const eVector2 &stiffness);
+  void setLeftDamping(const eVector2 &damping);
+  void setRightDamping(const eVector2 &damping);
 
   void reset();
 

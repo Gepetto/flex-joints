@@ -224,11 +224,18 @@ void Flex::reset() {
 
 void Flex::setLeftStiffness(const eVector2 &stiffness) {
   settings_.left_stiffness = stiffness;
-  settings_.left_damping = 2 * stiffness.cwiseSqrt();
 }
+
 void Flex::setRightStiffness(const eVector2 &stiffness) {
   settings_.right_stiffness = stiffness;
-  settings_.right_damping = 2 * stiffness.cwiseSqrt();
+}
+
+void Flex::setLeftDamping(const eVector2 &damping) {
+  settings_.left_damping = damping;
+}
+
+void Flex::setRightDamping(const eVector2 &damping) {
+  settings_.right_damping = damping;
 }
 
 }  // namespace flex
