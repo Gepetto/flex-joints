@@ -2,3 +2,8 @@ build
 log
 install
 .vscode
+python3
+**/__pycache__/*
+**/data/*
+.gitignore~
+**/README~
