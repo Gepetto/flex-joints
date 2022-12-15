@@ -2,7 +2,7 @@ This folder contains scripts to process the rosbags obtained from hip identifica
 
 #### Unbagger.py ####
 
-* It is a class to read ros bags and cast the required data into pandas frames. 
+* It is a class to read ros bags and cast the required data into pandas frames.
 
 
 #### Identification_tools.py ####
@@ -12,14 +12,14 @@ The example starts at the line 629.
 
 * It is important to specify the interval of time where the experiment happends.
 It can be specified in the lists `LT_range` and `RT_range`.
-In order to see what is the range of times that should be used, run `check_time_stiffness(<data frame>)` 
+In order to see what is the range of times that should be used, run `check_time_stiffness(<data frame>)`
 this will produce a plot where the starting and endding times can be observed.
 
 
 * It is also possible to discart certain values of stiffness.
 This can be specified using the lists `rm_LK` and `rm_RK` which are set to None by default.
 
-* For more options check the atributs of the funtion `identify`. 
+* For more options check the atributs of the funtion `identify`.
 
 
 #### map_stiffness ####
