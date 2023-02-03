@@ -1,0 +1,33 @@
+This folder contains scripts to process the rosbags obtained from hip identification experiments
+
+#### Unbagger.py ####
+
+* It is a class to read ros bags and cast the required data into pandas frames.
+
+
+#### Identification_tools.py ####
+
+* This script contains a use example that will be executed if it is run.
+The example starts at the line 629.
+
+* It is important to specify the interval of time where the experiment happends.
+It can be specified in the lists `LT_range` and `RT_range`.
+In order to see what is the range of times that should be used, run `check_time_stiffness(<data frame>)`
+this will produce a plot where the starting and endding times can be observed.
+
+
+* It is also possible to discart certain values of stiffness.
+This can be specified using the lists `rm_LK` and `rm_RK` which are set to None by default.
+
+* For more options check the atributs of the funtion `identify`.
+
+
+#### map_stiffness ####
+
+* Is a script to execute the identification tools directly from the bash with the bag file names as arguments.
+
+
+#### FirstPasses ####
+
+* Functions to correct and clean data for the first pass of the identification.
+Use examples are included, but they wont run directly as the bags are missing.

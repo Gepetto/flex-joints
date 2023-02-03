@@ -232,6 +232,24 @@ class FlexTestCase(unittest.TestCase):
         )
         self.assertTrue((original == originalComputed).all())
 
+    def test_rotations(self):
+
+        q0 = self.encoders_q
+        dq0 = self.encoders_dq
+        desired_torques = np.zeros(12)
+
+        q, dq = self.flex.correctEstimatedDeflections(desired_torques, q0, dq0)
+
+        q1 = q0.copy()
+        for o in np.linspace(0, np.pi / 2, 20):
+
+            q1[0] = o
+            q1[6] = o
+            q, dq = self.flex.correctEstimatedDeflections(desired_torques, q1, dq0)
+
+            self.assertTrue(q[0] - q[6] < 1e-13)
+            self.assertTrue(q[0] - o < 1e-13)
+
 
 if __name__ == "__main__":
     unittest.main()
