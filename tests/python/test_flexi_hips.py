@@ -13,7 +13,6 @@ from flex_joints import Flex
 
 class FlexTestCase(unittest.TestCase):
     def setUp(self):
-
         # [LH_pitch, LH_roll, RH_pitch, RH_roll]
         H_stiff = np.array([2200, 2200, 5000, 5000])
         H_damp = 2 * np.sqrt(H_stiff)
@@ -62,7 +61,6 @@ class FlexTestCase(unittest.TestCase):
         self.assertTrue((np.abs(corrected_q - self.encoders_q) < self.tol).all())
 
     def test_persistent_toque(self):
-
         left_flexing_torque = np.array([10, 60])
         right_flexing_torque = np.array([0, 0])
 
@@ -139,7 +137,6 @@ class FlexTestCase(unittest.TestCase):
         self.assertTrue((corrected_dq0 == corrected_dq3).all())
 
     def test_flexing_torque(self):
-
         T = (np.random.rand() * 2 - 1) * 80
         t = (np.random.rand() * 2 - 1) * 0.4
         tau_0 = np.zeros(3)
@@ -220,7 +217,6 @@ class FlexTestCase(unittest.TestCase):
         # forces (swinging hip) tends to reduce it.
 
     def test_current_flex_to_joint(self):
-
         delta = np.random.rand(2) - 0.5
 
         original = self.flex.Settings()["flexToJoint"]
