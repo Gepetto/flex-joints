@@ -2,6 +2,7 @@
   description = "Adaptation for rigid control on flexible devices";
 
   inputs = {
+    # Use MaximilienNaveau/nix until https://github.com/Gepetto/nix/pull/110 is merged.
     gepetto.url = "github:MaximilienNaveau/nix/topic/mnaveau/add-flex-joints";
     flake-parts.follows = "gepetto/flake-parts";
     nixpkgs.follows = "gepetto/nixpkgs";
