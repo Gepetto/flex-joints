@@ -15,13 +15,11 @@ flex::FlexSettings makeObservedSettings() {
   return observed_settings;
 }
 
-
 TEST(FlexEstimatorTest, DefaultConstructor) {
   flex::FlexSettings default_settings;
   flex::Flex stiff_hips;
   EXPECT_EQ(stiff_hips.getSettings(), default_settings);
 }
-
 
 TEST(FlexEstimatorTest, InitializeConstructor) {
   flex::FlexSettings current_settings = makeObservedSettings();
@@ -32,7 +30,6 @@ TEST(FlexEstimatorTest, InitializeConstructor) {
 
   EXPECT_EQ(stiff_hips.getSettings(), flex_hips.getSettings());
 }
-
 
 // TEST(FlexEstimatorTest, ComputeDeflection) {
 //   flex::FlexSettings current_settings = makeObservedSettings();
@@ -48,7 +45,6 @@ TEST(FlexEstimatorTest, InitializeConstructor) {
 
 //   EXPECT_EQ(delta1, delta2);
 // }
-
 
 // TEST(FlexEstimatorTest, CorrectEstimatedDeflection) {
 //   flex::FlexSettings observed_settings = makeObservedSettings();
