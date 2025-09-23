@@ -21,7 +21,7 @@ struct FlexSettings {
   double dt = 0.002, MA_duration = 0.01;  // [s]
   bool filtered = false;
 
-  friend std::ostream &operator<<(std::ostream &out, const FlexSettings &obj) {
+  friend std::ostream& operator<<(std::ostream& out, const FlexSettings& obj) {
     out << "FlexSettings:\n";
     out << "    left_stiffness: " << obj.left_stiffness << "\n";
     out << "    left_damping: " << obj.left_damping << "\n";
@@ -36,7 +36,7 @@ struct FlexSettings {
     return out;
   }
 
-  friend bool operator==(const FlexSettings &lhs, const FlexSettings &rhs) {
+  friend bool operator==(const FlexSettings& lhs, const FlexSettings& rhs) {
     bool test = true;
     test &= lhs.left_stiffness == rhs.left_stiffness;
     test &= lhs.left_damping == rhs.left_damping;
@@ -99,70 +99,70 @@ class Flex {
   eVector3 legAngularVelocity_;
   eMatrixRot rigidRotC_, rigidRotD_, M_;
 
-  const eVector3 &equivalentAngles(const eMatrixRot &fullRotation);
-  void correctHip(const eVector2 &delta, const eVector2 &deltaDot, eVectorX &q,
-                  eVectorX &dq, const Eigen::Array3i &hipIndices);
+  const eVector3& equivalentAngles(const eMatrixRot& fullRotation);
+  void correctHip(const eVector2& delta, const eVector2& deltaDot, eVectorX& q,
+                  eVectorX& dq, const Eigen::Array3i& hipIndices);
 
-  const eArray2 &movingAverage(const eArray2 &x, std::deque<eArray2> &queue,
-                               eArray2 &summation);
+  const eArray2& movingAverage(const eArray2& x, std::deque<eArray2>& queue,
+                               eArray2& summation);
 
  public:
   Flex();
 
-  Flex(const FlexSettings &settings);
+  Flex(const FlexSettings& settings);
 
-  void initialize(const FlexSettings &settings);
+  void initialize(const FlexSettings& settings);
 
-  const eVector2 &computeDeflection(const eArray2 &torques,
-                                    const eArray2 &delta0,
-                                    const eArray2 &stiffness,
-                                    const eArray2 &damping, const double dt);
+  const eVector2& computeDeflection(const eArray2& torques,
+                                    const eArray2& delta0,
+                                    const eArray2& stiffness,
+                                    const eArray2& damping, const double dt);
 
-  const eVector3 &currentFlexToJoint(const eVector2 &delta);
+  const eVector3& currentFlexToJoint(const eVector2& delta);
 
-  const eVector2 &estimateFlexingTorque(const eVector3 &hipPos,
-                                        const eVector3 &jointTorque);
+  const eVector2& estimateFlexingTorque(const eVector3& hipPos,
+                                        const eVector3& jointTorque);
 
-  const eVector2 &estimateFlexingTorque(const eVector3 &hipPos,
-                                        const eVector3 &jointTorque,
-                                        const eVector2 &delta0,
-                                        const eVector3 &jointForce);
+  const eVector2& estimateFlexingTorque(const eVector3& hipPos,
+                                        const eVector3& jointTorque,
+                                        const eVector2& delta0,
+                                        const eVector3& jointForce);
 
-  void correctDeflections(const eVector2 &leftFlexingTorque,
-                          const eVector2 &rightFlexingTorque, eVectorX &q,
-                          eVectorX &dq);
+  void correctDeflections(const eVector2& leftFlexingTorque,
+                          const eVector2& rightFlexingTorque, eVectorX& q,
+                          eVectorX& dq);
 
-  void correctEstimatedDeflections(const eVectorX &desiredTorque, eVectorX &q,
-                                   eVectorX &dq, const eVector3 &leftForce,
-                                   const eVector3 &rightForce);
+  void correctEstimatedDeflections(const eVectorX& desiredTorque, eVectorX& q,
+                                   eVectorX& dq, const eVector3& leftForce,
+                                   const eVector3& rightForce);
 
-  void correctEstimatedDeflections(const eVectorX &desiredTorque, eVectorX &q,
-                                   eVectorX &dq);
+  void correctEstimatedDeflections(const eVectorX& desiredTorque, eVectorX& q,
+                                   eVectorX& dq);
 
-  const FlexSettings &getSettings() { return settings_; }
+  const FlexSettings& getSettings() { return settings_; }
 
-  void setLeftStiffness(const eVector2 &stiffness);
-  void setRightStiffness(const eVector2 &stiffness);
-  void setLeftDamping(const eVector2 &damping);
-  void setRightDamping(const eVector2 &damping);
+  void setLeftStiffness(const eVector2& stiffness);
+  void setRightStiffness(const eVector2& stiffness);
+  void setLeftDamping(const eVector2& damping);
+  void setRightDamping(const eVector2& damping);
 
   void reset();
 
-  void setLeftFlex0(const eVector2 &delta0) { leftFlex0_ = delta0; }
-  const eVector2 &getLeftFlex0(void) { return leftFlex0_; }
+  void setLeftFlex0(const eVector2& delta0) { leftFlex0_ = delta0; }
+  const eVector2& getLeftFlex0(void) { return leftFlex0_; }
 
-  void setRightFlex0(const eVector2 &delta0) { rightFlex0_ = delta0; }
-  const eVector2 &getRightFlex0(void) { return rightFlex0_; }
+  void setRightFlex0(const eVector2& delta0) { rightFlex0_ = delta0; }
+  const eVector2& getRightFlex0(void) { return rightFlex0_; }
 
   const eVector2 getLeftFlex(void) { return leftFlex_; }
   const eVector2 getRightFlex(void) { return rightFlex_; }
   const eVector2 getLeftFlexRate(void) { return leftFlexRate_; }
   const eVector2 getRightFlexRate(void) { return rightFlexRate_; }
 
-  const eArray2 &get_summation_LH(void) { return summation_LH_; }
-  const eArray2 &get_summation_RH(void) { return summation_RH_; }
-  const std::deque<eArray2> &get_queue_LH(void) { return queue_LH_; }
-  const std::deque<eArray2> &get_queue_RH(void) { return queue_RH_; }
+  const eArray2& get_summation_LH(void) { return summation_LH_; }
+  const eArray2& get_summation_RH(void) { return summation_RH_; }
+  const std::deque<eArray2>& get_queue_LH(void) { return queue_LH_; }
+  const std::deque<eArray2>& get_queue_RH(void) { return queue_RH_; }
 };
 }  // namespace flex
 
