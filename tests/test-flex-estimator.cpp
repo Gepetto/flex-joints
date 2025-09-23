@@ -1,5 +1,5 @@
-#define BOOST_TEST_MODULE biped_stabilizer test boost
-#include <boost/test/included/unit_test.hpp>
+
+#include <gtest/gtest.h>
 
 #include "flex-joints/flexi-hips.hpp"
 
@@ -15,23 +15,23 @@ flex::FlexSettings makeObservedSettings() {
   return observed_settings;
 }
 
-BOOST_AUTO_TEST_CASE(test_flex_estimator_default_constructor) {
+TEST(FlexEstimatorTest, DefaultConstructor) {
   flex::FlexSettings default_settings;
   flex::Flex stiff_hips;
-  BOOST_CHECK_EQUAL(stiff_hips.getSettings(), default_settings);
+  EXPECT_EQ(stiff_hips.getSettings(), default_settings);
 }
 
-BOOST_AUTO_TEST_CASE(test_flex_estimator_initialize_constructor) {
+TEST(FlexEstimatorTest, InitializeConstructor) {
   flex::FlexSettings current_settings = makeObservedSettings();
   flex::Flex stiff_hips;
   flex::Flex flex_hips(current_settings);
 
   stiff_hips.initialize(current_settings);
 
-  BOOST_CHECK_EQUAL(stiff_hips.getSettings(), flex_hips.getSettings());
+  EXPECT_EQ(stiff_hips.getSettings(), flex_hips.getSettings());
 }
 
-// BOOST_AUTO_TEST_CASE(test_compute_deflection) {
+// TEST(FlexEstimatorTest, ComputeDeflection) {
 //   flex::FlexSettings current_settings = makeObservedSettings();
 //   flex::Flex flex_hips(current_settings);
 //   flex::eVector2 tau = flex::eVector2::Zero();
@@ -39,14 +39,14 @@ BOOST_AUTO_TEST_CASE(test_flex_estimator_initialize_constructor) {
 
 //   flex::eVector2 delta1 = flex_hips.computeDeflection(tau, flex::LEFT);
 //   flex::eVector2 delta2 = flex_hips.computeDeflection(tau, delta0,
-//   current_settings.left_stiffness,
-//                                                       current_settings.left_damping,
-//                                                       current_settings.dt);
+//     current_settings.left_stiffness,
+//     current_settings.left_damping,
+//     current_settings.dt);
 
-//   BOOST_CHECK_EQUAL(delta1, delta2);
+//   EXPECT_EQ(delta1, delta2);
 // }
 
-// BOOST_AUTO_TEST_CASE(test_correct_estimated_deflection) {
+// TEST(FlexEstimatorTest, CorrectEstimatedDeflection) {
 //   flex::FlexSettings observed_settings = makeObservedSettings();
 //   flex::Flex postureEstimator(observed_settings);
 
@@ -59,38 +59,43 @@ BOOST_AUTO_TEST_CASE(test_flex_estimator_initialize_constructor) {
 //   // Checking no deflection due to yawl torque
 //   tau(0) = 55; tau(3) = 55;
 //   postureEstimator.correctEstimatedDeflections(tau, q, dq, Eigen::Array3i(0,
-//   1, 2), Eigen::Array3i(3, 4, 5));
+//     1, 2), Eigen::Array3i(3, 4, 5));
 
-//   BOOST_CHECK_EQUAL(q, zero_q);
-//   BOOST_CHECK_EQUAL(dq, zero_dq);
+//   EXPECT_EQ(q, zero_q);
+//   EXPECT_EQ(dq, zero_dq);
 //   postureEstimator.resetLeftFlex0(); postureEstimator.resetRightFlex0();
 //   q = flex::eVectorX::Zero(6); dq = flex::eVectorX::Zero(6); tau =
-//   flex::eVectorX::Zero(6);
+//     flex::eVectorX::Zero(6);
 
 //   // Checking deflection from to roll torque
 //   tau(1) = 55; tau(4) = 55;
 //   postureEstimator.correctEstimatedDeflections(tau, q, dq, Eigen::Array3i(0,
-//   1, 2), Eigen::Array3i(3, 4, 5));
+//     1, 2), Eigen::Array3i(3, 4, 5));
 
-//   BOOST_CHECK_EQUAL(q(0), zero_q(0));
-//   BOOST_CHECK(q(1) != zero_q(1));
-//   BOOST_CHECK_EQUAL(q(2), zero_q(2));
-//   BOOST_CHECK_EQUAL(q(3), zero_q(3));
-//   BOOST_CHECK(q(4) != zero_q(4));
-//   BOOST_CHECK_EQUAL(q(5), zero_q(5));
+//   EXPECT_EQ(q(0), zero_q(0));
+//   EXPECT_NE(q(1), zero_q(1));
+//   EXPECT_EQ(q(2), zero_q(2));
+//   EXPECT_EQ(q(3), zero_q(3));
+//   EXPECT_NE(q(4), zero_q(4));
+//   EXPECT_EQ(q(5), zero_q(5));
 //   postureEstimator.resetLeftFlex0(); postureEstimator.resetRightFlex0();
 //   q = flex::eVectorX::Zero(6); dq = flex::eVectorX::Zero(6); tau =
-//   flex::eVectorX::Zero(6);
+//     flex::eVectorX::Zero(6);
 
 //   // Checking deflection from pitch torque
 //   tau(2) = 55; tau(5) = 55;
 //   postureEstimator.correctEstimatedDeflections(tau, q, dq, Eigen::Array3i(0,
-//   1, 2), Eigen::Array3i(3, 4, 5));
+//     1, 2), Eigen::Array3i(3, 4, 5));
 
-//   BOOST_CHECK_EQUAL(q(0), zero_q(0));
-//   BOOST_CHECK_EQUAL(q(1), zero_q(1));
-//   BOOST_CHECK(q(2) != zero_q(2));
-//   BOOST_CHECK_EQUAL(q(3), zero_q(3));
-//   BOOST_CHECK_EQUAL(q(4), zero_q(4));
-//   BOOST_CHECK(q(5) != zero_q(5));
+//   EXPECT_EQ(q(0), zero_q(0));
+//   EXPECT_EQ(q(1), zero_q(1));
+//   EXPECT_NE(q(2), zero_q(2));
+//   EXPECT_EQ(q(3), zero_q(3));
+//   EXPECT_EQ(q(4), zero_q(4));
+//   EXPECT_NE(q(5), zero_q(5));
 // }
+
+int main(int argc, char** argv) {
+  ::testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}

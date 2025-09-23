@@ -49,7 +49,7 @@ project(${PROJECT_NAME} ${PROJECT_ARGS})
 # Project dependencies
 find_package(Eigen3 REQUIRED)
 if(BUILD_TESTING)
-  find_package(Boost REQUIRED COMPONENTS unit_test_framework)
+  find_package(GTest REQUIRED)
 endif()
 
 if(BUILD_PYTHON_INTERFACE)
