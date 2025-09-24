@@ -6,7 +6,7 @@ Created on Mon Nov 21 09:46:25 2022
 @author: nvilla
 """
 
-from Identification_tools import identify_from_data, load_data
+from identification_tools import identify_from_data, load_data
 import argparse
 import numpy as np
 
