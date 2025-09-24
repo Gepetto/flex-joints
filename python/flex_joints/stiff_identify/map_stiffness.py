@@ -29,16 +29,16 @@ def getArgs():
         default=None,
         nargs="+",
         type=float,
-        help="range of times of the leg support experiment where"
-        "the measurements must be taken",
+        help="range of times of the leg support experiment where the "
+        "measurements must be taken",
     )
     parser.add_argument(
         "-RT_range",
         default=None,
         nargs="+",
         type=float,
-        help="range of times of the right support experiment where "
-        "the measurements must be taken",
+        help="range of times of the right support experiment where the "
+        "measurements must be taken",
     )
     parser.add_argument(
         "-rm_LK",
