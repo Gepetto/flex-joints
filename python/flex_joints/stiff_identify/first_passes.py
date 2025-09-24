@@ -9,7 +9,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 
-from Identification_tools import load_data, get_com_cop_corrected
+from identification_tools import load_data, get_com_cop_corrected
 
 
 def clean_first_pass(frame, support, axis, t_extremes=None):

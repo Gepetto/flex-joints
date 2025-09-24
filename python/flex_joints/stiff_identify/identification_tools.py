@@ -24,7 +24,7 @@ plt.rcParams.update(
     }
 )
 
-### PARAMETERS ###
+# PARAMETERS #
 left_leg_mass = 17.57468  # kg
 right_leg_mass = 17.57468  # kg
 robot_mass = 90.272192  # kg
@@ -38,7 +38,7 @@ left_hip_indices = np.array([0, 1, 2])
 right_hip_indices = np.array([6, 7, 8])
 filtered = True
 
-### FUNCTIONS ###
+# FUNCTIONS #
 
 
 def load_data(bag_file_name):
@@ -72,7 +72,7 @@ def get_com_cop(bg, support):
     the support can be 'left' or 'right'
     """
 
-    ## Unpackaging:
+    # Unpackaging:
     LH_stiff_x = bg["HipLeftFlexibilityStiffness_roll"].to_numpy()
     LH_stiff_y = bg["HipLeftFlexibilityStiffness_pitch"].to_numpy()
     RH_stiff_x = bg["HipRightFlexibilityStiffness_roll"].to_numpy()
@@ -88,7 +88,7 @@ def get_com_cop(bg, support):
 
     time = bg.index.to_numpy()
 
-    ## Correcting the rigid model error:
+    # Correcting the rigid model error:
 
     Nocorrected_com = []
     Nocorrected_cop = []
@@ -149,7 +149,7 @@ def get_com_cop_corrected(bg, support, corrector_settings=None):
     flex = load_corrector(corrector_settings)
     flexToJoint = flex.Settings()["flexToJoint"]
 
-    ## Unpackaging:
+    # Unpackaging:
     LH_stiff_x = bg["HipLeftFlexibilityStiffness_roll"].to_numpy()
     LH_stiff_y = bg["HipLeftFlexibilityStiffness_pitch"].to_numpy()
     RH_stiff_x = bg["HipRightFlexibilityStiffness_roll"].to_numpy()
@@ -170,7 +170,7 @@ def get_com_cop_corrected(bg, support, corrector_settings=None):
 
     time = bg.index.to_numpy()
 
-    ## Correcting the rigid model error:
+    # Correcting the rigid model error:
 
     corrected_com = []
     corrected_cop = []
@@ -300,7 +300,7 @@ def arrange_data(
         [supp + "H_stiffness_" + other_axis, swin + "H_stiffness_" + other_axis]
     )
 
-    ### Removing undesired stiffness
+    # Removing undesired stiffness
     if sp_remove_st is not None:
         for st in sp_remove_st:
             processed_df = processed_df[
@@ -397,9 +397,11 @@ def identify(
     axis : string
         it is either "x" or "y"
     LT_range : list, optional
-        [t_min, t_max] that identify the left experiment measurement. The default is None.
+        [t_min, t_max] that identify the left experiment measurement.
+        The default is None.
     RT_range : TYPE, optional
-        [t_min, t_max] that identify the right experiment measurement. The default is None.
+        [t_min, t_max] that identify the right experiment measurement.
+        The default is None.
     rm_LK : list, optional
         list of left stiffness values to remove from the both frames.
     rm_RK : list, optional
@@ -450,7 +452,7 @@ def identify(
     }
 
 
-### PLOTS ###
+# PLOTS #
 
 
 def check_time_stiffness(data, legend=False, plot_name=None):
@@ -577,27 +579,27 @@ def check_stiffness_grid(data, support, axis):
     ax0.plot(
         data[supp + "H_stiffness_" + axis],
         data[swin + "H_stiffness_" + axis],
-        label=swin + "\_stiff\_" + axis,
+        label=swin + "_stiff_" + axis,
     )
     fig0.legend()
     ax0.set_title("variation of stiffness in " + axis)
-    ax0.set_xlabel(r"stiffness\_support [Nm/rad]", fontsize=14)
-    ax0.set_ylabel(r"stiffness\_swing [Nm/rad]", fontsize=14)
+    ax0.set_xlabel(r"stiffness_support [Nm/rad]", fontsize=14)
+    ax0.set_ylabel(r"stiffness_swing [Nm/rad]", fontsize=14)
 
     fig1, ax1 = plt.subplots()
     ax1.plot(
         data[supp + "H_stiffness_" + axis],
         data[swin + "H_stiffness_" + other_axis],
-        label=swin + "\_stiff\_" + other_axis,
+        label=swin + "_stiff_" + other_axis,
     )
     ax1.plot(
         data[supp + "H_stiffness_" + axis],
         data[supp + "H_stiffness_" + other_axis],
-        label=supp + "\_stiff\_" + other_axis,
+        label=supp + "_stiff_" + other_axis,
     )
     fig1.legend()
     ax1.set_title("variation of stiffness in " + other_axis)
-    ax1.set_xlabel(r"stiffness\_support$_" + axis + r"$ [Nm/rad]", fontsize=14)
+    ax1.set_xlabel(r"stiffness_support$_" + axis + r"$ [Nm/rad]", fontsize=14)
     ax1.set_ylabel(r"stiffness [Nm/rad]", fontsize=14)
 
 
