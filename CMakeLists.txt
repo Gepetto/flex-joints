@@ -58,9 +58,6 @@ if(BUILD_TESTING)
       GIT_REPOSITORY https://github.com/doctest/doctest.git
       GIT_TAG master)
     FetchContent_MakeAvailable(doctest)
-    add_subdirectory(${doctest_SOURCE_DIR})
-    # Create an alias alled doctest::doctest of the doctest target
-    add_library(doctest::doctest ALIAS doctest)
   endif()
 endif()
 
