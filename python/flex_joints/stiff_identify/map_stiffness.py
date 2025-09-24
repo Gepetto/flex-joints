@@ -29,14 +29,16 @@ def getArgs():
         default=None,
         nargs="+",
         type=float,
-        help="range of times of the leg support experiment where the measurements must be taken",
+        help="range of times of the leg support experiment where"
+        "the measurements must be taken",
     )
     parser.add_argument(
         "-RT_range",
         default=None,
         nargs="+",
         type=float,
-        help="range of times of the right support experiment where the measurements must be taken",
+        help="range of times of the right support experiment where "
+        "the measurements must be taken",
     )
     parser.add_argument(
         "-rm_LK",
@@ -57,7 +59,8 @@ def getArgs():
     parser.add_argument(
         "-check_timming",
         default=False,
-        help="plot the used stiffness as a function of time to see and set by hand what is the range of time of the experiment",
+        help="plot the used stiffness as a function of time to see and set by "
+        "hand what is the range of time of the experiment",
     )
 
     return parser.parse_args()

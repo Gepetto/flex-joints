@@ -10,7 +10,7 @@ This folder contains scripts to process the rosbags obtained from hip identifica
 * This script contains a use example that will be executed if it is run.
 The example starts at the line 629.
 
-* It is important to specify the interval of time where the experiment happends.
+* It is important to specify the interval of time where the experiment happens.
 It can be specified in the lists `LT_range` and `RT_range`.
 In order to see what is the range of times that should be used, run `check_time_stiffness(<data frame>)`
 this will produce a plot where the starting and endding times can be observed.
