@@ -1,6 +1,6 @@
 
-#include <gtest/gtest.h>
-
+#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+#include "doctest/doctest.h"
 #include "flex-joints/flexi-hips.hpp"
 
 flex::FlexSettings makeObservedSettings() {
@@ -15,23 +15,23 @@ flex::FlexSettings makeObservedSettings() {
   return observed_settings;
 }
 
-TEST(FlexEstimatorTest, DefaultConstructor) {
+TEST_CASE("FlexEstimatorTest - DefaultConstructor") {
   flex::FlexSettings default_settings;
   flex::Flex stiff_hips;
-  EXPECT_EQ(stiff_hips.getSettings(), default_settings);
+  CHECK(stiff_hips.getSettings() == default_settings);
 }
 
-TEST(FlexEstimatorTest, InitializeConstructor) {
+TEST_CASE("FlexEstimatorTest - InitializeConstructor") {
   flex::FlexSettings current_settings = makeObservedSettings();
   flex::Flex stiff_hips;
   flex::Flex flex_hips(current_settings);
 
   stiff_hips.initialize(current_settings);
 
-  EXPECT_EQ(stiff_hips.getSettings(), flex_hips.getSettings());
+  CHECK(stiff_hips.getSettings() == flex_hips.getSettings());
 }
 
-// TEST(FlexEstimatorTest, ComputeDeflection) {
+// TEST_CASE("FlexEstimatorTest - ComputeDeflection") {
 //   flex::FlexSettings current_settings = makeObservedSettings();
 //   flex::Flex flex_hips(current_settings);
 //   flex::eVector2 tau = flex::eVector2::Zero();
@@ -43,10 +43,10 @@ TEST(FlexEstimatorTest, InitializeConstructor) {
 //     current_settings.left_damping,
 //     current_settings.dt);
 
-//   EXPECT_EQ(delta1, delta2);
+//   CHECK(delta1 == delta2);
 // }
 
-// TEST(FlexEstimatorTest, CorrectEstimatedDeflection) {
+// TEST_CASE("FlexEstimatorTest - CorrectEstimatedDeflection") {
 //   flex::FlexSettings observed_settings = makeObservedSettings();
 //   flex::Flex postureEstimator(observed_settings);
 
@@ -61,8 +61,8 @@ TEST(FlexEstimatorTest, InitializeConstructor) {
 //   postureEstimator.correctEstimatedDeflections(tau, q, dq, Eigen::Array3i(0,
 //     1, 2), Eigen::Array3i(3, 4, 5));
 
-//   EXPECT_EQ(q, zero_q);
-//   EXPECT_EQ(dq, zero_dq);
+//   CHECK(q == zero_q);
+//   CHECK(dq == zero_dq);
 //   postureEstimator.resetLeftFlex0(); postureEstimator.resetRightFlex0();
 //   q = flex::eVectorX::Zero(6); dq = flex::eVectorX::Zero(6); tau =
 //     flex::eVectorX::Zero(6);
@@ -72,12 +72,12 @@ TEST(FlexEstimatorTest, InitializeConstructor) {
 //   postureEstimator.correctEstimatedDeflections(tau, q, dq, Eigen::Array3i(0,
 //     1, 2), Eigen::Array3i(3, 4, 5));
 
-//   EXPECT_EQ(q(0), zero_q(0));
-//   EXPECT_NE(q(1), zero_q(1));
-//   EXPECT_EQ(q(2), zero_q(2));
-//   EXPECT_EQ(q(3), zero_q(3));
-//   EXPECT_NE(q(4), zero_q(4));
-//   EXPECT_EQ(q(5), zero_q(5));
+//   CHECK(q(0) == zero_q(0));
+//   CHECK(q(1) != zero_q(1));
+//   CHECK(q(2) == zero_q(2));
+//   CHECK(q(3) == zero_q(3));
+//   CHECK(q(4) != zero_q(4));
+//   CHECK(q(5) == zero_q(5));
 //   postureEstimator.resetLeftFlex0(); postureEstimator.resetRightFlex0();
 //   q = flex::eVectorX::Zero(6); dq = flex::eVectorX::Zero(6); tau =
 //     flex::eVectorX::Zero(6);
@@ -87,15 +87,10 @@ TEST(FlexEstimatorTest, InitializeConstructor) {
 //   postureEstimator.correctEstimatedDeflections(tau, q, dq, Eigen::Array3i(0,
 //     1, 2), Eigen::Array3i(3, 4, 5));
 
-//   EXPECT_EQ(q(0), zero_q(0));
-//   EXPECT_EQ(q(1), zero_q(1));
-//   EXPECT_NE(q(2), zero_q(2));
-//   EXPECT_EQ(q(3), zero_q(3));
-//   EXPECT_EQ(q(4), zero_q(4));
-//   EXPECT_NE(q(5), zero_q(5));
+//   CHECK(q(0) == zero_q(0));
+//   CHECK(q(1) == zero_q(1));
+//   CHECK(q(2) != zero_q(2));
+//   CHECK(q(3) == zero_q(3));
+//   CHECK(q(4) == zero_q(4));
+//   CHECK(q(5) != zero_q(5));
 // }
-
-int main(int argc, char** argv) {
-  ::testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
-}
