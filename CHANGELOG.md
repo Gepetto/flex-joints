@@ -34,5 +34,35 @@ tags previous to the latest one.
 
 - ⚠️ Disable python builds by default
 
+## [1.0.3] - 2022-08-11
+
+### Changed
+
+- Remove some log prints.
+- ⚠️ Add Getter for the deflection values
+- Add the option to install only the python bindings.
+- sync cmake submodule.
+- Format
+
+## [1.0.2] - 2022-08-11
+
+### Added
+
+- Function to correct the posture with force.
+
+### Changed
+
+- Update the submodule
+- Update the eigenpy version
+- format
+- ⚠️ separate the computation of flexible torque
+
+## [1.0.0] - 2022-06-24
+
+Initial release
+
 [Unreleased]: https://github.com/Gepetto/flex-joints/compare/v1.1.0...HEAD
-[1.1.0]: https://github.com/Gepetto/flex-joints/releases/tag/v1.1.0
+[1.1.0]: https://github.com/Gepetto/flex-joints/compare/v1.0.3...v1.1.0
+[1.0.3]: https://github.com/Gepetto/flex-joints/compare/v1.0.2...v1.0.3
+[1.0.2]: https://github.com/Gepetto/flex-joints/compare/v1.0.0...v1.0.2
+[1.0.0]: https://github.com/Gepetto/flex-joints/releases/tag/v1.0.0
