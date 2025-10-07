@@ -19,6 +19,7 @@
   <depend>boost</depend>
   <depend>eigen</depend>
   <depend>eigenpy</depend>
+  <depend>jrl_cmakemodules</depend>
 
   <buildtool_depend>cmake</buildtool_depend>
   <export>
