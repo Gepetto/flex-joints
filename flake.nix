@@ -26,13 +26,14 @@
         {
           packages = {
             default = self'.packages.flex-joints;
-            flex-joints = pkgs.flex-joints.overrideAttrs {
-              checkInputs = [ pkgs.gtest ];
+            flex-joints = pkgs.python3Packages.flex-joints.overrideAttrs {
+              checkInputs = [ pkgs.doctest ];
               src = lib.fileset.toSource {
                 root = ./.;
                 fileset = lib.fileset.unions [
                   ./include
                   ./src
+                  ./python
                   ./tests
                   ./CMakeLists.txt
                   ./package.xml

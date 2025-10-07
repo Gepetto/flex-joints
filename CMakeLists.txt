@@ -49,7 +49,16 @@ project(${PROJECT_NAME} ${PROJECT_ARGS})
 # Project dependencies
 find_package(Eigen3 REQUIRED)
 if(BUILD_TESTING)
-  find_package(GTest REQUIRED)
+  # Prepare doctest for other targets to use
+  find_package(doctest QUIET)
+  if(NOT doctest_FOUND)
+    include(FetchContent)
+    FetchContent_Declare(
+      doctest
+      GIT_REPOSITORY https://github.com/doctest/doctest.git
+      GIT_TAG master)
+    FetchContent_MakeAvailable(doctest)
+  endif()
 endif()
 
 if(BUILD_PYTHON_INTERFACE)
