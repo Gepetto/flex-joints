@@ -7,12 +7,10 @@ set(PROJECT_DESCRIPTION "adaptation for rigid control on flexible devices")
 set(PROJECT_URL https://github.com/${PROJECT_NAMESPACE}/${PROJECT_NAME})
 
 # Project options
-option(BUILD_PYTHON_INTERFACE "Build the python binding" OFF)
-option(INSTALL_PYTHON_INTERFACE_ONLY "Instal *ONLY* the python bindings" OFF)
 option(SUFFIX_SO_VERSION "Suffix library name with its version" ON)
 
 # Project configuration
-if(NOT INSTALL_PYTHON_INTERFACE_ONLY)
+if(NOT BUILD_STANDALONE_PYTHON_INTERFACE)
   set(PROJECT_USE_CMAKE_EXPORT TRUE)
 endif()
 set(CUSTOM_HEADER_DIR ${PROJECT_NAME})
@@ -73,13 +71,20 @@ set(${PROJECT_NAME}_HEADERS include/${PROJECT_NAME}/fwd.hpp
 
 set(${PROJECT_NAME}_SOURCES src/flexi-hips.cpp)
 
-add_library(${PROJECT_NAME} SHARED ${${PROJECT_NAME}_SOURCES}
-                                   ${${PROJECT_NAME}_HEADERS})
-target_link_libraries(${PROJECT_NAME} PUBLIC Eigen3::Eigen)
-target_include_directories(${PROJECT_NAME} PUBLIC $<INSTALL_INTERFACE:include>)
+if(BUILD_STANDALONE_PYTHON_INTERFACE)
+  add_project_dependency(${PROJECT_NAME} CONFIG REQUIRED)
+else()
+  add_library(${PROJECT_NAME} SHARED ${${PROJECT_NAME}_SOURCES}
+                                     ${${PROJECT_NAME}_HEADERS})
+  add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
+  target_link_libraries(${PROJECT_NAME} PUBLIC Eigen3::Eigen)
+  target_include_directories(${PROJECT_NAME}
+                             PUBLIC $<INSTALL_INTERFACE:include>)
 
-if(SUFFIX_SO_VERSION)
-  set_target_properties(${PROJECT_NAME} PROPERTIES SOVERSION ${PROJECT_VERSION})
+  if(SUFFIX_SO_VERSION)
+    set_target_properties(${PROJECT_NAME} PROPERTIES SOVERSION
+                                                     ${PROJECT_VERSION})
+  endif()
 endif()
 
 # Python Bindings
@@ -93,10 +98,9 @@ if(BUILD_TESTING)
 endif()
 
 # Installation
-if(NOT INSTALL_PYTHON_INTERFACE_ONLY)
+if(NOT BUILD_STANDALONE_PYTHON_INTERFACE)
   install(
     TARGETS ${PROJECT_NAME}
     EXPORT ${TARGETS_EXPORT_NAME}
     DESTINATION lib)
-  install(FILES package.xml DESTINATION share/${PROJECT_NAME})
 endif()
