@@ -48,7 +48,6 @@
         ],
         "src-agimus-controller": "src-agimus-controller",
         "src-agimus-msgs": "src-agimus-msgs",
-        "src-colmpc": "src-colmpc",
         "src-example-parallel-robots": "src-example-parallel-robots",
         "src-franka-description": "src-franka-description",
         "src-gepetto-viewer": "src-gepetto-viewer",
@@ -65,16 +64,15 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1758641149,
-        "narHash": "sha256-PNvYjRtnc1jyXeDqHletcti+4ELccWJ65QrXCyBOGYs=",
-        "owner": "MaximilienNaveau",
-        "repo": "nix",
-        "rev": "fcf12cc3858895c6ccf8dd4c24932b618db00630",
+        "lastModified": 1759857561,
+        "narHash": "sha256-UxsSsoCkAPahaiKINNZwiOS2EYIBFhjGDnV3mE+ynYI=",
+        "owner": "nim65s",
+        "repo": "gepetto-nix",
+        "rev": "e3a838b582175eec899995110c0fc1d85a279500",
         "type": "github"
       },
       "original": {
-        "owner": "MaximilienNaveau",
-        "ref": "topic/mnaveau/add-flex-joints",
+        "owner": "gepetto",
         "repo": "nix",
         "type": "github"
       }
@@ -205,22 +203,6 @@
       "original": {
         "owner": "agimus-project",
         "repo": "agimus_msgs",
-        "type": "github"
-      }
-    },
-    "src-colmpc": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1757823293,
-        "narHash": "sha256-EYuxn+VFMxlM2lOgrZl65KhvS7kn1GMR31cgrfCeNLA=",
-        "owner": "agimus-project",
-        "repo": "colmpc",
-        "rev": "0f3ebedac91a644bbbbf34c46ddf3f11785cc608",
-        "type": "github"
-      },
-      "original": {
-        "owner": "agimus-project",
-        "repo": "colmpc",
         "type": "github"
       }
     },

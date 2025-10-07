@@ -2,8 +2,7 @@
   description = "Adaptation for rigid control on flexible devices";
 
   inputs = {
-    # Use MaximilienNaveau/nix until https://github.com/Gepetto/nix/pull/110 is merged.
-    gepetto.url = "github:MaximilienNaveau/nix/topic/mnaveau/add-flex-joints";
+    gepetto.url = "github:gepetto/nix";
     flake-parts.follows = "gepetto/flake-parts";
     nixpkgs.follows = "gepetto/nixpkgs";
     nix-ros-overlay.follows = "gepetto/nix-ros-overlay";
@@ -27,7 +26,6 @@
           packages = {
             default = self'.packages.flex-joints;
             flex-joints = pkgs.python3Packages.flex-joints.overrideAttrs {
-              checkInputs = [ pkgs.doctest ];
               src = lib.fileset.toSource {
                 root = ./.;
                 fileset = lib.fileset.unions [
