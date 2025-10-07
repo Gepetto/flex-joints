@@ -9,6 +9,8 @@ Releases are available on the [github repository](https://github.com/Gepetto/fle
 
 ## [Unreleased]
 
+## [1.2.0] - 1980-01-01
+
 ### added
 
 - Python scripts to identify the stiffness of the virtual flexible joints from
@@ -61,7 +63,8 @@ tags previous to the latest one.
 
 Initial release
 
-[Unreleased]: https://github.com/Gepetto/flex-joints/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/Gepetto/flex-joints/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/Gepetto/flex-joints/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/Gepetto/flex-joints/compare/v1.0.3...v1.1.0
 [1.0.3]: https://github.com/Gepetto/flex-joints/compare/v1.0.2...v1.0.3
 [1.0.2]: https://github.com/Gepetto/flex-joints/compare/v1.0.0...v1.0.2
