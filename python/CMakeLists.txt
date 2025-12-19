@@ -15,7 +15,12 @@ target_link_boost_python(${PY_NAME} PRIVATE)
 install(TARGETS ${PY_NAME} DESTINATION ${${PY_NAME}_INSTALL_DIR})
 
 set(${PY_NAME}_PYTHON __init__.py)
-
 foreach(python ${${PY_NAME}_PYTHON})
   python_install_on_site(${PY_NAME} ${python})
+endforeach()
+
+set(${PY_NAME}_PYTHON __init__.py first_passes.py identification_tools.py
+                      map_stiffness.py unbagger.py)
+foreach(python ${${PY_NAME}_PYTHON})
+  python_install_on_site(${PY_NAME}/stiff_identify ${python})
 endforeach()

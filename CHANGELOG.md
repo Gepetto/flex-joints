@@ -9,6 +9,8 @@ Releases are available on the [github repository](https://github.com/Gepetto/fle
 
 ## [Unreleased]
 
+- Install the Python script added in the last release.
+
 ## [1.2.0] - 2025-10-07
 
 ### added
