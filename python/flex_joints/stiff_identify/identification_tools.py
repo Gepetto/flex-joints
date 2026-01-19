@@ -5,6 +5,7 @@ Created on Thu Nov  3 13:21:34 2022
 
 @author: nvilla
 """
+
 from unbagger import Unbagger
 from pathlib import Path
 import numpy as np
@@ -14,7 +15,6 @@ import matplotlib.pyplot as plt
 import matplotlib.colors as colors
 import matplotlib.cm as cm
 from scipy.interpolate import interp2d
-
 
 plt.rcParams.update(
     {
