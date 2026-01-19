@@ -47,7 +47,7 @@ class FlexTestCase(unittest.TestCase):
         desired_torques = np.zeros(12)
 
         # No torque produce no deflection:
-        (corrected_q, corrected_dq) = self.flex.correctEstimatedDeflections(
+        corrected_q, corrected_dq = self.flex.correctEstimatedDeflections(
             desired_torques, self.encoders_q, self.encoders_dq
         )
         self.assertTrue((np.abs(corrected_q - self.encoders_q) < self.tol).all())
@@ -55,7 +55,7 @@ class FlexTestCase(unittest.TestCase):
         left_flexing_torque = np.zeros(2)
         right_flexing_torque = np.zeros(2)
 
-        (corrected_q, corrected_dq) = self.flex.correctDeflections(
+        corrected_q, corrected_dq = self.flex.correctDeflections(
             left_flexing_torque, right_flexing_torque, self.encoders_q, self.encoders_dq
         )
         self.assertTrue((np.abs(corrected_q - self.encoders_q) < self.tol).all())
@@ -64,7 +64,7 @@ class FlexTestCase(unittest.TestCase):
         left_flexing_torque = np.array([10, 60])
         right_flexing_torque = np.array([0, 0])
 
-        (corrected_q, corrected_dq0) = self.flex.correctDeflections(
+        corrected_q, corrected_dq0 = self.flex.correctDeflections(
             left_flexing_torque,
             right_flexing_torque,
             self.encoders_q.copy(),
@@ -74,7 +74,7 @@ class FlexTestCase(unittest.TestCase):
         self.assertTrue(np.abs(corrected_dq0[2]) >= 0)
 
         for i in range(10):
-            (corrected_q, corrected_dq10) = self.flex.correctDeflections(
+            corrected_q, corrected_dq10 = self.flex.correctDeflections(
                 left_flexing_torque,
                 right_flexing_torque,
                 self.encoders_q.copy(),
@@ -85,7 +85,7 @@ class FlexTestCase(unittest.TestCase):
         self.assertTrue(np.abs(corrected_dq10[2]) < np.abs(corrected_dq0[2]))
 
         for i in range(1000):
-            (corrected_q, corrected_dq1000) = self.flex.correctDeflections(
+            corrected_q, corrected_dq1000 = self.flex.correctDeflections(
                 left_flexing_torque,
                 right_flexing_torque,
                 self.encoders_q.copy(),
@@ -95,7 +95,7 @@ class FlexTestCase(unittest.TestCase):
         self.assertTrue(np.abs(corrected_dq1000[2]) >= 0)
         self.assertTrue(np.abs(corrected_dq1000[2]) < self.tol)
 
-        (corrected_q, corrected_dq1001) = self.flex.correctDeflections(
+        corrected_q, corrected_dq1001 = self.flex.correctDeflections(
             left_flexing_torque,
             right_flexing_torque,
             self.encoders_q.copy(),
@@ -109,13 +109,13 @@ class FlexTestCase(unittest.TestCase):
         left_flexing_torque = np.random.rand(2) * 100
         right_flexing_torque = np.random.rand(2) * 100
 
-        (corrected_q0, corrected_dq0) = self.flex.correctDeflections(
+        corrected_q0, corrected_dq0 = self.flex.correctDeflections(
             left_flexing_torque,
             right_flexing_torque,
             self.encoders_q.copy(),
             self.encoders_dq.copy(),
         )
-        (corrected_q1, corrected_dq1) = self.flex.correctDeflections(
+        corrected_q1, corrected_dq1 = self.flex.correctDeflections(
             left_flexing_torque,
             right_flexing_torque,
             self.encoders_q.copy(),
@@ -126,7 +126,7 @@ class FlexTestCase(unittest.TestCase):
         self.assertTrue(not (corrected_dq0 == corrected_dq1).all())
 
         self.flex.reset()
-        (corrected_q3, corrected_dq3) = self.flex.correctDeflections(
+        corrected_q3, corrected_dq3 = self.flex.correctDeflections(
             left_flexing_torque,
             right_flexing_torque,
             self.encoders_q.copy(),
