@@ -238,7 +238,6 @@ class FlexTestCase(unittest.TestCase):
 
         q1 = q0.copy()
         for o in np.linspace(0, np.pi / 2, 20):
-
             q1[0] = o
             q1[6] = o
             q, dq = self.flex.correctEstimatedDeflections(desired_torques, q1, dq0)

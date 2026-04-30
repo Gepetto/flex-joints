@@ -93,7 +93,6 @@ class Unbagger:
 
 
 if __name__ == "__main__":
-
     explorer = Unbagger(
         "data/stiffness_estimation_left_first_dcm_nobase_2022-07-11-14-28-41.bag"
     )

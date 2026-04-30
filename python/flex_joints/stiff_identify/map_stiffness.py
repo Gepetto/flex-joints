@@ -67,7 +67,6 @@ def getArgs():
 
 
 if __name__ == "__main__":
-
     args = getArgs()
 
     left_Data = load_data(args.left_bag_path)
