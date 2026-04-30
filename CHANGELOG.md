@@ -9,6 +9,8 @@ Releases are available on the [github repository](https://github.com/Gepetto/fle
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-04-30
+
 - Install the Python script added in the last release.
 - nix: switch to flakoboros
 - drop submodule
@@ -67,7 +69,8 @@ tags previous to the latest one.
 
 Initial release
 
-[Unreleased]: https://github.com/Gepetto/flex-joints/compare/v1.2.0...HEAD
+[Unreleased]: https://github.com/Gepetto/flex-joints/compare/v1.3.0...HEAD
+[1.3.0]: https://github.com/Gepetto/flex-joints/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/Gepetto/flex-joints/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/Gepetto/flex-joints/compare/v1.0.3...v1.1.0
 [1.0.3]: https://github.com/Gepetto/flex-joints/compare/v1.0.2...v1.0.3
