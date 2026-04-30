@@ -24,9 +24,6 @@ if(jrl-cmakemodules_FOUND)
         TARGET jrl-cmakemodules::jrl-cmakemodules
         PROPERTY INTERFACE_INCLUDE_DIRECTORIES
     )
-elseif(EXISTS "${CMAKE_SOURCE_DIR}/cmake/base.cmake")
-    message(STATUS "JRL cmakemodules found in the source tree.")
-    set(JRL_CMAKE_MODULES "${CMAKE_SOURCE_DIR}/cmake")
 else()
     message(STATUS "JRL cmakemodules not found. Let's fetch it.")
     include(FetchContent)
@@ -63,7 +60,7 @@ if(BUILD_TESTING)
 endif()
 
 if(BUILD_PYTHON_INTERFACE)
-    add_project_dependency(eigenpy 2.7.10 REQUIRED)
+    add_project_dependency(eigenpy REQUIRED)
     string(REGEX REPLACE "-" "_" PY_NAME ${PROJECT_NAME})
     set(${PY_NAME}_INSTALL_DIR ${PYTHON_SITELIB}/${PY_NAME})
 endif()
