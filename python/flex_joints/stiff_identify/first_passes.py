@@ -53,7 +53,6 @@ def clean_first_pass(frame, support, axis, t_extremes=None):
     error_bars_y = []
 
     for support_st in supp_stiff_values:
-
         local_ids = frame[frame[supp + "H_stiffness_" + other_axis] == support_st].index
         N = local_ids.size
         IDs = local_ids[round(wait_stabilization * N) :]

@@ -93,7 +93,6 @@ def get_com_cop(bg, support):
     Nocorrected_com = []
     Nocorrected_cop = []
     for i in range(time.size):
-
         com = np.array([com_x[i], com_y[i], com_z[i]])
         Nocorrected_com.append(com)
 
@@ -361,7 +360,6 @@ def identify_possible_cross(X, Y, lZ_low, lZ_high, rZ_low, rZ_high, points):
 
     possible_cross = []
     for point in points:
-
         if LL(*point) > 0:
             continue
         if LH(*point) < 0:
@@ -629,7 +627,6 @@ def identify_from_data(
 
 
 if __name__ == "__main__":
-
     leftBag_name = "second_pass_LEFT_2022-10-20-15-53-41.bag"
     LT_range = [18, 1476]
     rm_LK = None

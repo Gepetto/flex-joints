@@ -1,26 +1,35 @@
 set(${PY_NAME}_SOURCES main.cpp)
 
 add_library(${PY_NAME} SHARED ${${PY_NAME}_SOURCES})
-target_link_libraries(${PY_NAME} PUBLIC ${PROJECT_NAME}::${PROJECT_NAME}
-                                        eigenpy::eigenpy)
+target_link_libraries(
+    ${PY_NAME}
+    PUBLIC ${PROJECT_NAME}::${PROJECT_NAME} eigenpy::eigenpy
+)
 target_include_directories(${PY_NAME} SYSTEM PRIVATE ${PYTHON_INCLUDE_DIR})
 get_relative_rpath(${${PY_NAME}_INSTALL_DIR} ${PY_NAME}_INSTALL_RPATH)
 set_target_properties(
-  ${PY_NAME}
-  PROPERTIES INSTALL_RPATH "${${PY_NAME}_INSTALL_RPATH}"
-             LIBRARY_OUTPUT_DIRECTORY ${PY_NAME}
-             PREFIX ""
-             SUFFIX ${PYTHON_EXT_SUFFIX})
+    ${PY_NAME}
+    PROPERTIES
+        INSTALL_RPATH "${${PY_NAME}_INSTALL_RPATH}"
+        LIBRARY_OUTPUT_DIRECTORY ${PY_NAME}
+        PREFIX ""
+        SUFFIX ${PYTHON_EXT_SUFFIX}
+)
 target_link_boost_python(${PY_NAME} PRIVATE)
 install(TARGETS ${PY_NAME} DESTINATION ${${PY_NAME}_INSTALL_DIR})
 
 set(${PY_NAME}_PYTHON __init__.py)
 foreach(python ${${PY_NAME}_PYTHON})
-  python_install_on_site(${PY_NAME} ${python})
+    python_install_on_site(${PY_NAME} ${python})
 endforeach()
 
-set(${PY_NAME}_PYTHON __init__.py first_passes.py identification_tools.py
-                      map_stiffness.py unbagger.py)
+set(${PY_NAME}_PYTHON
+    __init__.py
+    first_passes.py
+    identification_tools.py
+    map_stiffness.py
+    unbagger.py
+)
 foreach(python ${${PY_NAME}_PYTHON})
-  python_install_on_site(${PY_NAME}/stiff_identify ${python})
+    python_install_on_site(${PY_NAME}/stiff_identify ${python})
 endforeach()
