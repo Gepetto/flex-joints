@@ -114,9 +114,9 @@ void exposeFlex() {
                &Flex::estimateFlexingTorque,
                bp::return_value_policy<bp::reference_existing_object>()))
       .def("estimateFlexingTorque",
-           bp::make_function<const eVector2& (
-               Flex::*)(const eVector3&, const eVector3&, const eVector2&,
-                        const eVector3&)>(
+           bp::make_function<const eVector2& (Flex::*)(
+               const eVector3&, const eVector3&, const eVector2&,
+               const eVector3&)>(
                &Flex::estimateFlexingTorque,
                bp::return_value_policy<bp::reference_existing_object>()))
       .def("correctDeflections", &correctDeflections,
